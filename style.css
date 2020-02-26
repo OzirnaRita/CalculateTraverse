@@ -1,0 +1,22 @@
+.invalid{
+  border: 1px solid red;
+}
+
+.mainContent, #coordinates{
+  display: flex;
+}
+
+table, th ,td{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th ,td{
+  padding: 5px 10px;
+}
+#firstCoordinates, #lastCoordinates{
+  min-width:530px;
+}
+
+.firstValues{
+  color:red;
+}
