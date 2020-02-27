@@ -155,7 +155,6 @@ function addSettings() {
   validationFunc(fields);
   lengthLimitation();
   if (form.querySelectorAll('.invalid').length == 0) {
-    console.log('good')
     /*const data = formToJSON(form.elements);
     console.log(data)
     console.log(JSON.stringify(data))
@@ -398,7 +397,7 @@ function add() {
       let afterBetaLines = document.querySelectorAll('.afterBeta');
       let lastAfterBeta = afterBetaLines[afterBetaLines.length - 1];
 
-      lastAfterBeta.insertAdjacentHTML('afterend', '<tr class="addBeta"><td></td><td></td><td></td><td></td><td colspan="10"></td><td></td><td></td></tr>');
+      lastAfterBeta.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td></td><td></td><td class="fBeta"></td><td></td><td colspan="10"></td><td></td><td></td></tr>');
       betaCells = document.querySelectorAll('.addBeta');
       lastBeta = betaCells[betaCells.length - 1];
       writeDegr(degr, min, sec, lastBeta.cells[1])
@@ -407,7 +406,7 @@ function add() {
     }
     afterBeta();
     secondForm.reset();
-    calcMeasureCorners(); 
+    calcMeasureCorners();
   }
 };
 
@@ -418,8 +417,7 @@ function afterBeta() {
   let betaCells = document.querySelectorAll('.addBeta');
   let lastBeta = betaCells[betaCells.length - 1];
 
-  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td></td><td class="measureDistance"></td><td class="gammaCorner"></td><td class="measureLength"></td><td ></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
-
+  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
   let measureLengths = document.querySelectorAll('.measureLength');
   let lastmeasureLength = measureLengths[measureLengths.length - 1];
   let measureDistance = document.querySelectorAll('.measureDistance');
@@ -449,14 +447,14 @@ function afterBeta() {
 
     radians = (degrees * Math.PI) / 180;
     length = Math.cos(radians) * length;
-    lastmeasureLength.innerHTML = degrees != 0 ? length.toFixed(7) : length;
+    lastmeasureLength.innerHTML = degrees != 0 ? length.toFixed(3) : length;
 
   } else {
-    lastmeasureLength.innerHTML = length;
+    lastmeasureLength.innerHTML = Number(length).toFixed(3);
   }
 }
 
-function prevSublingFunc(elem, selector) {
+function prevSiblingFunc(elem, selector) {
 
   var sibling = elem.previousElementSibling;
   if (!selector) return sibling;
@@ -467,7 +465,7 @@ function prevSublingFunc(elem, selector) {
   }
 };
 
-function nextSublingFunc(elem, selector) {
+function nextSiblingFunc(elem, selector) {
 
   var sibling = elem.nextElementSibling;
   if (!selector) return sibling;
@@ -482,27 +480,27 @@ minFields.forEach(element => {
   element.addEventListener('keyup', function () {
     if (element.value > 0) {
       if (element.id == 'gammaCornerMin') {
-        prevSublingFunc(element, '.cornerDegr').setAttribute('max', 89);
-        prevSublingFunc(element, '.cornerDegr').setAttribute('min', -89);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 89);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('min', -89);
       } else {
-        prevSublingFunc(element, '.cornerDegr').setAttribute('max', 359);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 359);
       }
     } else {
       if (element.id == 'gammaCornerMin') {
-        prevSublingFunc(element, '.cornerDegr').setAttribute('max', 90);
-        prevSublingFunc(element, '.cornerDegr').setAttribute('min', -90);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 90);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('min', -90);
       } else {
-        prevSublingFunc(element, '.cornerDegr').setAttribute('max', 360);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 360);
       }
     }
 
-    if (prevSublingFunc(element, '.cornerDegr').value == '') {
-      prevSublingFunc(element, '.cornerDegr').value = 0
+    if (prevSiblingFunc(element, '.cornerDegr').value == '') {
+      prevSiblingFunc(element, '.cornerDegr').value = 0
     }
   })
 
   element.addEventListener('change', function () {
-    if (element.value.length == '' && nextSublingFunc(element, '.cornerSec.field').value >= 0) {
+    if (element.value.length == '' && nextSiblingFunc(element, '.cornerSec.field').value >= 0) {
       element.value = 0;
     }
   })
@@ -513,32 +511,32 @@ secFields.forEach(element => {
     if (element.value > 0) {
 
       if (element.id == 'gammaCornerSec') {
-        prevSublingFunc(element, '.cornerMin.field').setAttribute('max', 59);
-        prevSublingFunc(element, '.cornerDegr').setAttribute('max', 89);
-        prevSublingFunc(element, '.cornerDegr').setAttribute('min', -89);
+        prevSiblingFunc(element, '.cornerMin.field').setAttribute('max', 59);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 89);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('min', -89);
       } else {
-        prevSublingFunc(element, '.cornerMin.field').setAttribute('max', 59);
-        prevSublingFunc(element, '.cornerDegr').setAttribute('max', 359);
+        prevSiblingFunc(element, '.cornerMin.field').setAttribute('max', 59);
+        prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 359);
       }
     } else {
       if (element.id == 'gammaCornerSec') {
-        prevSublingFunc(element, '.cornerMin.field').setAttribute('max', 60);
-        if (prevSublingFunc(element, '.cornerMin.field').value <= 0) {
-          prevSublingFunc(element, '.cornerDegr').setAttribute('max', 90);
-          prevSublingFunc(element, '.cornerDegr').setAttribute('min', -90);
+        prevSiblingFunc(element, '.cornerMin.field').setAttribute('max', 60);
+        if (prevSiblingFunc(element, '.cornerMin.field').value <= 0) {
+          prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 90);
+          prevSiblingFunc(element, '.cornerDegr').setAttribute('min', -90);
         }
       } else {
-        prevSublingFunc(element, '.cornerMin.field').setAttribute('max', 60);
-        if (prevSublingFunc(element, '.cornerMin.field').value <= 0) {
-          prevSublingFunc(element, '.cornerDegr').setAttribute('max', 360);
+        prevSiblingFunc(element, '.cornerMin.field').setAttribute('max', 60);
+        if (prevSiblingFunc(element, '.cornerMin.field').value <= 0) {
+          prevSiblingFunc(element, '.cornerDegr').setAttribute('max', 360);
         }
       }
     }
-    if (prevSublingFunc(element, '.cornerMin.field').value == '') {
-      prevSublingFunc(element, '.cornerMin.field').value = 0
+    if (prevSiblingFunc(element, '.cornerMin.field').value == '') {
+      prevSiblingFunc(element, '.cornerMin.field').value = 0
     }
-    if (prevSublingFunc(element, '.cornerDegr').value == '') {
-      prevSublingFunc(element, '.cornerDegr').value = 0
+    if (prevSiblingFunc(element, '.cornerDegr').value == '') {
+      prevSiblingFunc(element, '.cornerDegr').value = 0
     }
   })
 })
@@ -602,7 +600,7 @@ function calcMeasureCorners() {
   degSum += Number(res.deg);
   minSum += Number(res.min);
   secSum += Number(res.sec);
-  console.log(secSum)
+
   if (secSum >= 60) {
     minSum += Math.trunc(secSum / 60);
     if (Math.trunc(secSum / 60) == secSum / 60) {
@@ -621,11 +619,11 @@ function calcMeasureCorners() {
         minSum = '';
       }
     } else {
-      if(secSum == 0){
-      minSum = ((minSum / 60 - Math.trunc(minSum / 60)) * 60).toFixed(1);
-    }else{
-      minSum = Math.round((minSum / 60 - Math.trunc(minSum / 60)) * 60);
-    }
+      if (secSum == 0) {
+        minSum = ((minSum / 60 - Math.trunc(minSum / 60)) * 60).toFixed(1);
+      } else {
+        minSum = Math.round((minSum / 60 - Math.trunc(minSum / 60)) * 60);
+      }
     }
   }
   writeDegr(degSum, minSum, secSum, document.getElementById('calcCornSum'));
@@ -646,7 +644,7 @@ function transDegr(string) {
 }
 
 function calcTeorCorners() {
-  let countBetas = document.querySelectorAll('.addBeta').length + 1;
+  let countBetas = document.querySelectorAll('.betaLine').length;
   let resCorn = document.getElementById('calcCornSum');
   let teorCornSum = document.getElementById('teorCornSum');
   let res = transDegr(resCorn.textContent);
@@ -671,28 +669,28 @@ function calcTeorCorners() {
     } else if (res.min >= 0 && res.sec > 0) {
       fBeta = '+' + res.min + "'" + res.sec + '"';
     }
-  }else if(res.deg == (sumTeorIn - 1) || res.deg == (sumTeorOut - 1)){
+  } else if (res.deg == (sumTeorIn - 1) || res.deg == (sumTeorOut - 1)) {
     if ((res.min.length == 0 || res.min == 0) && (res.sec.length == 0 || res.sec == 0)) {
-      fBeta = '-' + 1 + '&deg;';// ask
+      fBeta = '-' + 1 + '&deg;'; // ask
     } else if (res.min > 0 && (res.sec.length == 0 || res.sec == 0)) {
       fBeta = '-' + (60 - res.min) + "'";
     } else if (res.min >= 0 && res.sec > 0) {
       fBeta = '-' + (59 - res.min) + "'" + (60 - res.sec) + '"';
     }
   }
-document.getElementById('fBeta').innerHTML = fBeta;
-//fBetaValid(fBeta, countBetas);
-shareFBeta(fBeta, countBetas);
+  document.getElementById('fBeta').innerHTML = fBeta;
+  //fBetaValid(fBeta, countBetas);
+  shareFBeta(fBeta, countBetas);
 }
- 
-function fBetaValid(x, countBetas){
-  
+
+function fBetaValid(x, countBetas) {
+
   x = x.toString().slice(1);
-  let res = transDegr('0°'+x);
+  let res = transDegr('0°' + x);
   let control;
   if (classValue == '1') {
     control = 1 * Math.sqrt(countBetas);
-    value = Number(res.min) + Number(res.sec/60);
+    value = Number(res.min) + Number(res.sec / 60);
   } else if (classValue == '2') {
     control = 10 * Math.sqrt(countBetas);
     value = Number(res.min * 60) + Number(res.sec);
@@ -702,22 +700,49 @@ function fBetaValid(x, countBetas){
   } else {
     control = 5 * Math.sqrt(countBetas);
     value = Number(res.min * 60) + Number(res.sec);
-}
-console.log(value)
-console.log(control)
-if(value > control){
-  alert("Кутова нев`язка більша за допустиму, розрахунок зупинено")
-}else{
-// shareFBeta(x);
-}
+  }
+  console.log(value)
+  console.log(control)
+  if (value > control) {
+    alert("Кутова нев`язка більша за допустиму, розрахунок зупинено")
+  } else {
+    // shareFBeta(x);
+  }
 }
 
-function shareFBeta(x, countBetas){
- x = x.toString().slice(1);
- let res = transDegr('0°'+x);
- let d = (Number(res.min) * 60 + Number(res.sec))/countBetas;
- console.log(d)
- if((d - Math.trunc(d)) == 0){
-   
- }
+function shareFBeta(x, countBetas) {
+  let distances = document.querySelectorAll('.measureLength');
+  let distList = [];
+  distances.forEach(elem => {
+    distList.push(elem.textContent);
+  })
+
+  let minDistance = Math.min(...distList);
+
+  distances.forEach(elem => {
+    if (elem.textContent == minDistance) {
+      elem.classList.add('minLength');
+    }
+  })
+
+  x = x.toString().slice(1);
+  let res = transDegr('0°' + x);
+  let sum = (Number(res.min) * 60 + Number(res.sec))
+  let d = sum / countBetas;
+  let fBetas = document.querySelectorAll('.fBeta');
+  if ((d - Math.trunc(d)) == 0) {
+    fBetas.forEach(element => {
+      element.innerHTML = d + '"'
+    })
+  } else {
+    fBetas.forEach(element => {
+      element.innerHTML = Math.trunc(d) + '"'
+    })
+    let elements = document.querySelectorAll('.minLength');
+    elements.forEach(elem => {
+      let value = elem.parentElement.nextElementSibling.children[2].textContent;
+      let res = Number(value.split('"').shift()) + ((sum - (Math.trunc(d) * countBetas)) / elements.length);
+      elem.parentElement.nextElementSibling.children[2].innerHTML = res + '"';
+    })
+  }
 }
