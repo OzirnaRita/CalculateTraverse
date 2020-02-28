@@ -397,7 +397,7 @@ function add() {
       let afterBetaLines = document.querySelectorAll('.afterBeta');
       let lastAfterBeta = afterBetaLines[afterBetaLines.length - 1];
 
-      lastAfterBeta.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td></td><td></td><td class="fBeta"></td><td></td><td colspan="10"></td><td></td><td></td></tr>');
+      lastAfterBeta.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td></td><td></td><td class="fBeta"></td><td  class="correctedCorner"></td><td colspan="10"></td><td></td><td></td></tr>');
       betaCells = document.querySelectorAll('.addBeta');
       lastBeta = betaCells[betaCells.length - 1];
       writeDegr(degr, min, sec, lastBeta.cells[1])
@@ -585,9 +585,6 @@ function calcMeasureCorners() {
   let degSum = 0;
   let minSum = 0;
   let secSum = 0;
-
-  let lastBeta = document.getElementById('addLastBeta').cells[1].textContent;
-  let res = transDegr(lastBeta);
   let betas = document.querySelectorAll('.addBeta');
 
   betas.forEach(elem => {
@@ -597,45 +594,75 @@ function calcMeasureCorners() {
     secSum += Number(corner.sec);
   })
 
-  degSum += Number(res.deg);
-  minSum += Number(res.min);
-  secSum += Number(res.sec);
+  let lastBeta = document.getElementById('addLastBeta').cells[1].textContent;
+  if (lastBeta) {
+    let res = transDegr(lastBeta);
+    degSum += Number(res.deg);
+    minSum += Number(res.min);
+    secSum += Number(res.sec);
+  }
 
-  if (secSum >= 60) {
-    minSum += Math.trunc(secSum / 60);
-    if (Math.trunc(secSum / 60) == secSum / 60) {
-      secSum = '';
+  let resCorn = calcSecToMinToDeg(degSum, minSum, secSum);
+
+  writeDegr(resCorn.deg, resCorn.min, resCorn.sec, document.getElementById('calcCornSum'));
+}
+
+function calcSecToMinToDeg(deg, min, sec) {
+  deg = Number(deg);
+  sec = Number(sec);
+  min = Number(min);
+  if (sec >= 60) {
+    min += Math.trunc(sec / 60);
+    if (Math.trunc(sec / 60) == sec / 60) {
+      sec = '';
     } else {
-      secSum = Math.round((secSum / 60 - Math.trunc(secSum / 60)) * 60);
+      sec = Math.round((sec / 60 - Math.trunc(sec / 60)) * 60);
     }
   }
 
-  if (minSum >= 60) {
-    degSum += Math.trunc(minSum / 60);
-    if (Math.trunc(minSum / 60) == minSum / 60) {
-      if (secSum !== '') {
-        minSum = 0;
+  if (min >= 60) {
+    deg += Math.trunc(min / 60);
+    if (Math.trunc(min / 60) == min / 60) {
+      if (sec !== '') {
+        min = 0;
       } else {
-        minSum = '';
+        min = '';
       }
     } else {
-      if (secSum == 0) {
-        minSum = ((minSum / 60 - Math.trunc(minSum / 60)) * 60).toFixed(1);
+      if (sec == 0) {
+        min = ((min / 60 - Math.trunc(min / 60)) * 60).toFixed(1);
       } else {
-        minSum = Math.round((minSum / 60 - Math.trunc(minSum / 60)) * 60);
+        min = Math.round((min / 60 - Math.trunc(min / 60)) * 60);
       }
     }
   }
-  writeDegr(degSum, minSum, secSum, document.getElementById('calcCornSum'));
+  return {
+    deg,
+    min,
+    sec
+  }
 }
 
 function transDegr(string) {
-  let str = string.split('°');
-  let deg = str.shift();
-  str = str.toString().split("'");
-  let min = str.shift();
-  str = str.toString().split('"');
-  let sec = str.shift();
+  let deg, min, sec;
+  if (string.includes('°')) {
+    string = string.split('°');
+    deg = string.shift();
+  } else {
+    deg = 0;
+  }
+  if (string.toString().includes('\'')) {
+    string = string.toString().split("'");
+    min = string.shift();
+  } else {
+    min = 0;
+  }
+  if (string.toString().includes('"')) {
+    string = string.toString().split('"');
+    sec = string.shift();
+  } else {
+    sec = 0;
+  }
   return {
     deg,
     min,
@@ -648,6 +675,7 @@ function calcTeorCorners() {
   let resCorn = document.getElementById('calcCornSum');
   let teorCornSum = document.getElementById('teorCornSum');
   let res = transDegr(resCorn.textContent);
+
   let fBeta;
 
   let sumTeorIn = 180 * (countBetas - 2);
@@ -686,7 +714,7 @@ function calcTeorCorners() {
 function fBetaValid(x, countBetas) {
 
   x = x.toString().slice(1);
-  let res = transDegr('0°' + x);
+  let res = transDegr(x);
   let control;
   if (classValue == '1') {
     control = 1 * Math.sqrt(countBetas);
@@ -711,6 +739,7 @@ function fBetaValid(x, countBetas) {
 }
 
 function shareFBeta(x, countBetas) {
+  let sign = x.substr(0, 1);
   let distances = document.querySelectorAll('.measureLength');
   let distList = [];
   distances.forEach(elem => {
@@ -726,10 +755,12 @@ function shareFBeta(x, countBetas) {
   })
 
   x = x.toString().slice(1);
-  let res = transDegr('0°' + x);
+
+  let res = transDegr(x);
   let sum = (Number(res.min) * 60 + Number(res.sec))
   let d = sum / countBetas;
   let fBetas = document.querySelectorAll('.fBeta');
+
   if ((d - Math.trunc(d)) == 0) {
     fBetas.forEach(element => {
       element.innerHTML = d + '"'
@@ -743,6 +774,37 @@ function shareFBeta(x, countBetas) {
       let value = elem.parentElement.nextElementSibling.children[2].textContent;
       let res = Number(value.split('"').shift()) + ((sum - (Math.trunc(d) * countBetas)) / elements.length);
       elem.parentElement.nextElementSibling.children[2].innerHTML = res + '"';
+    })
+  }
+
+  fBetas.forEach(elem => {
+    if (sign == '-') {
+      elem.innerHTML = '+' + elem.textContent;
+    } else if (sign == '+') {
+      elem.innerHTML = '-' + elem.textContent;
+    }
+  })
+  correctedCorners(sign);
+}
+
+function correctedCorners(sign) {
+  let lines = document.querySelectorAll('.betaLine');
+  if (sign == '-') {
+    lines.forEach(elem => {
+      let corn = transDegr(elem.children[1].textContent);
+      let res = (Number(corn.sec)) + Number(transDegr(elem.children[2].textContent).sec);
+      let corCorn = calcSecToMinToDeg(corn.deg, corn.min, res);
+
+      writeDegr(corCorn.deg, corCorn.min, corCorn.sec, elem.children[3]);
+    })
+  } else if (sign == "+") {
+    lines.forEach(elem => {
+      let corn = transDegr(elem.children[1].textContent);
+      let res = ((Number(corn.deg)*60 + Number(corn.min))*60 + Number(corn.sec)) + (Number(transDegr(elem.children[2].textContent).sec));
+      let sec = Math.round((res/60 - Math.trunc(res/60)) * 60);
+      let min = Math.round((Math.trunc(res/60)/60 - Math.trunc(Math.trunc(res/60)/60)) * 60);
+      let deg =  Math.trunc(Math.trunc(res/60)/60);
+       writeDegr(deg, min, sec, elem.children[3]);
     })
   }
 }
