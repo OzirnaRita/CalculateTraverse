@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <title>Calculator</title>
   <link rel="stylesheet" href="style.css">
-  
+
 </head>
 
 <body>
@@ -132,7 +132,8 @@
               <div id="firstCornPointChoose">
                 <input type="radio" name="tasks" id="corner" checked><label for="corner">дирекційного кута</label>
                 <span>або</span>
-                <input type="radio" name="tasks" id="twoPoints"><label for="twoPoints">координати наступної точки</label>
+                <input type="radio" name="tasks" id="twoPoints"><label for="twoPoints">координати наступної
+                  точки</label>
               </div>
             </p>
           </div>
@@ -148,8 +149,8 @@
 
           <div id="cornerBlock">
             <p>дирекц. угол:<br>
-              <input type="number" class="cornerDegr" name="cornerDegrDirect" id="cornerDegrDirect" min="0"
-                max="360" required> <label for="cornerDegrDirect">&deg;</label>
+              <input type="number" class="cornerDegr" name="cornerDegrDirect" id="cornerDegrDirect" min="0" max="360"
+                required> <label for="cornerDegrDirect">&deg;</label>
               <input type="number" class="cornerMin field" name="cornerMinDirect" id="cornerMinDirect" step="0.001"
                 style="display: none;" min="0" max="60">
               <label for="cornerMinDirect" style="display: none;" class="cornerMin">'</label>
@@ -175,13 +176,13 @@
                 <input type="radio" name="lastTasks" id="lastCorner" checked><label for="lastCorner">дирекційного
                   кута</label>
                 <span>або</span>
-                <input type="radio" name="lastTasks" id="lastTwoPoints"><label for="lastTwoPoints">координати
+                   <input type="radio" name="lastTasks" id="lastTwoPoints"><label for="lastTwoPoints">координати
                   наступної точки</label>
               </div>
             </p>
           </div>
 
-          <div id="lastPointCoordinates" style="display:none;" id="lastPoint">
+          <div id="lastPointCoordinates" style="display:block;" id="lastPoint">
             <p><label for="lastPointX2">X2:</label> <input type="number" min="0" name="lastPointX2" id="lastPointX2"
                 step="0.001"></p>
             <p><label for="lastPointY2">Y2: <input type="number" name="lastPointY2" id="lastPointY2" min="0"
@@ -190,7 +191,8 @@
 
           <div id="lastCornerBlock">
             <p>дирекц. угол:<br>
-              <input type="number" class="cornerDegr" name="lastCornerDegrDirect" id="lastCornerDegrDirect" min="0" max="360" required>
+              <input type="number" class="cornerDegr" name="lastCornerDegrDirect" id="lastCornerDegrDirect" min="0"
+                max="360" required>
               <label for="lastCornerDegrDirect">&deg;</label>
               <input type="number" class="cornerMin field" name="lastCornerMinDirect" id="lastCornerMinDirect"
                 step="0.001" style="display: none;" min="0" max="60">
@@ -216,9 +218,11 @@
         <p>Кут &beta; :
           <input type="number" class="cornerDegr" id="betaCornerDegr" min="0" max="360" required> <label
             for="betaCornerDegr">&deg;</label>
-          <input type="number" class="cornerMin field" id="betaCornerMin" step="0.001" style="display: none;" min="0" max="60">
+          <input type="number" class="cornerMin field" id="betaCornerMin" step="0.001" style="display: none;" min="0"
+            max="60">
           <label for="betaCornerMin" class="cornerMin" style="display: none;">'</label>
-          <input type="number" class="cornerSec field" id="betaCornerSec" step="0.001" style="display: none;" min="0" max="60">
+          <input type="number" class="cornerSec field" id="betaCornerSec" step="0.001" style="display: none;" min="0"
+            max="60">
           <label for="betaCornerSec" class="cornerSec" style="display: none;">"</label>
         </p>
 
@@ -227,17 +231,19 @@
       <div id="cornerGamma">Кут нахилу &gamma; :
         <input type="number" required class="cornerDegr" id="gammaCornerDegr" min="-90" max="90"> <label
           for="gammaCornerDegr">&deg;</label>
-        <input type="number" class="cornerMin field" id="gammaCornerMin" step="0.001" style="display: none;" min="0" max="60">
+        <input type="number" class="cornerMin field" id="gammaCornerMin" step="0.001" style="display: none;" min="0"
+          max="60">
         <label for="gammaCornerMin" class="cornerMin" style="display: none;">'</label>
-        <input type="number" class="cornerSec field" id="gammaCornerSec" step="0.001" style="display: none;" min="0" max="60">
+        <input type="number" class="cornerSec field" id="gammaCornerSec" step="0.001" style="display: none;" min="0"
+          max="60">
         <label for="gammaCornerSec" class="cornerSec" style="display: none;">"</label>
       </div>
 
       <p>
-         <button type="submit" disabled id="sideOfTraverseButton">Додати</button> 
-         <button type="submit" disabled id="lastBetaCorner">Додати останній кут &beta;</button>
+        <button type="submit" disabled id="sideOfTraverseButton">Додати</button>
+        <button type="submit" disabled id="lastBetaCorner">Додати останній кут &beta;</button>
       </p>
-      
+
 
     </form>
   </div>
@@ -271,7 +277,7 @@
       </tr>
       <tr>
         <td colspan='4'></td>
-        <td class="firstValues" id="firstAlpha"></td>
+        <td class="firstValues alphaCorner" id="firstAlpha"></td>
         <td colspan="11"></td>
       </tr>
       <tr class="addBeta betaLine">
@@ -292,14 +298,14 @@
         <td colspan="10"></td>
         <td class="firstValues" id="penultPointXCoordinate"></td>
         <td class="firstValues" id="penultPointYCoordinate"></td>
-      </td>
+        </td>
       <tr>
         <td colspan='4'></td>
         <td class="firstValues" id="lastAlpha"></td>
         <td colspan='11'></td>
       </tr>
       <tr id="lastLine" class="firstValues">
-        <td >Бт4</td>
+        <td>Бт4</td>
         <td colspan='13'></td>
         <td id="lastPointXCoordinate"></td>
         <td id="lastPointYCoordinate"></td>
@@ -308,7 +314,7 @@
         <td></td>
         <td id="calcCornSum"></td>
         <td id="fBeta"></td>
-        <td  id="teorCornSum"></td>
+        <td id="teorCornSum"></td>
         <td></td>
         <td></td>
         <td></td>
@@ -326,7 +332,7 @@
   </div>
 
 
-<script src="main.js"></script>
+  <script src="main.js"></script>
 
 </body>
 

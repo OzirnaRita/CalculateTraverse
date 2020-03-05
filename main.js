@@ -25,9 +25,15 @@ let secFields = document.querySelectorAll('.cornerSec');
 let table = document.getElementById('table');
 let rows = table.getElementsByTagName('tr');
 
-let classValue = document.getElementById('classAccuracy').value;
+let traverseType = document.getElementById('traverseType').value;
 
-document.addEventListener('click', cornerMin)
+let classValue = document.getElementById('classAccuracy').value;
+let cornersDirection = document.getElementById('direction').value;
+let alpha = document.getElementById('firstAlpha');
+let lastAlpha = document.getElementById('lastAlpha');
+let fBetaSum = document.getElementById('fBeta');
+document.addEventListener('click', cornerMin);
+
 
 if (form) {
   form.addEventListener('click', selectTeoStep);
@@ -201,9 +207,6 @@ function addToTable() {
   let lastX2 = form.lastPointX2.value;
   let lastY2 = form.lastPointY2.value;
 
-  let alpha = document.getElementById('firstAlpha');
-  let lastAlpha = document.getElementById('lastAlpha');
-
 
   if (document.getElementById("corner").checked) {
     document.getElementById('firstLine').style.display = 'none';
@@ -340,23 +343,6 @@ if (btn2 != undefined) {
   });
 }
 
-// secondForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
-// console.log(event);
-//   if (event.target.id == 'sideOfTraverseButton') {
-//     add();
-//     secondForm.reset();
-//   } else {
-//     addLastCorner();
-//     secondForm.reset();
-//     document.getElementById('sideOfTraverseButton').disabled = true;
-//     document.getElementById('lastBetaCorner').disabled = true;
-//     secondForm.reset();
-//     //calculateResults();
-//   }
-// });
-
-
 function addLastCorner() {
   validationFunc(secondFormFields);
   if (secondForm.querySelectorAll('.invalid').length == 0) {
@@ -375,7 +361,6 @@ function addLastCorner() {
     calcTeorCorners();
   }
 }
-
 
 function add() {
   validationFunc(secondFormFields);
@@ -410,14 +395,13 @@ function add() {
   }
 };
 
-
 function afterBeta() {
   let degrees;
   let length = secondForm.length.value;
   let betaCells = document.querySelectorAll('.addBeta');
   let lastBeta = betaCells[betaCells.length - 1];
 
-  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
+  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td class="alphaCorner"></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
   let measureLengths = document.querySelectorAll('.measureLength');
   let lastmeasureLength = measureLengths[measureLengths.length - 1];
   let measureDistance = document.querySelectorAll('.measureDistance');
@@ -475,7 +459,6 @@ function nextSiblingFunc(elem, selector) {
     sibling = sibling.nextElementSibling;
   }
 };
-console.log(minFields)
 minFields.forEach(element => {
   element.addEventListener('keyup', function () {
     if (element.value > 0) {
@@ -543,123 +526,73 @@ secFields.forEach(element => {
 
 function lengthLimitation() {
   let builtValue = document.getElementById('builtUp').value;
-  // if (classValue == '2') {
-  //   document.getElementById('length').setAttribute('min', 0.12);
-  //   document.getElementById('length').setAttribute('max', 0.80);
-  // } else if (classValue == '3') {
-  //   document.getElementById('length').setAttribute('min', 0.08);
-  //   document.getElementById('length').setAttribute('max', 0.50);
-  // } else if (classValue == '4') {
-  //   document.getElementById('length').setAttribute('min', 0.25);
-  //   document.getElementById('length').setAttribute('max', 3.0);
-  // } else {
-  //   if (builtValue == '1') {
-  //     document.getElementById('length').setAttribute('min', 0.2);
-  //     document.getElementById('length').setAttribute('max', 1);
-  //   } else {
-  //     document.getElementById('length').setAttribute('min', 0.4);
-  //     document.getElementById('length').setAttribute('max', 1.5);
-  //   }
-  // }
+  let length = document.getElementById('length');
   if (classValue == '2') {
-    document.getElementById('length').setAttribute('min', 120);
-    document.getElementById('length').setAttribute('max', 800);
+    length.setAttribute('min', 120);
+    length.setAttribute('max', 800);
   } else if (classValue == '3') {
-    document.getElementById('length').setAttribute('min', 80);
-    document.getElementById('length').setAttribute('max', 500);
+    length.setAttribute('min', 80);
+    length.setAttribute('max', 500);
   } else if (classValue == '4') {
-    document.getElementById('length').setAttribute('min', 250);
-    document.getElementById('length').setAttribute('max', 3000);
+    length.setAttribute('min', 250);
+    length.setAttribute('max', 3000);
   } else {
     if (builtValue == '1') {
-      document.getElementById('length').setAttribute('min', 200);
-      document.getElementById('length').setAttribute('max', 1000);
+      length.setAttribute('min', 200);
+      length.setAttribute('max', 1000);
     } else {
-      document.getElementById('length').setAttribute('min', 400);
-      document.getElementById('length').setAttribute('max', 1500);
+      length.setAttribute('min', 400);
+      length.setAttribute('max', 1500);
     }
+  }
+}
+
+function limitLength(x, y) {
+  if (x <= length.value <= y) {
+    length.classList.remove('invalid');
+  } else {
+    length.classList.add('invalid');
   }
 }
 
 function calcMeasureCorners() {
-  let degSum = 0;
-  let minSum = 0;
-  let secSum = 0;
+  let sum = 0,
+    sec;
   let betas = document.querySelectorAll('.addBeta');
+  let lastBeta = document.getElementById('addLastBeta').cells[1].textContent;
 
   betas.forEach(elem => {
     let corner = transDegr(elem.cells[1].textContent);
-    degSum += Number(corner.deg);
-    minSum += Number(corner.min);
-    secSum += Number(corner.sec);
+    sec = fromSecMinDegToSec(corner.deg, corner.min, corner.sec);
+    sum += sec;
   })
 
-  let lastBeta = document.getElementById('addLastBeta').cells[1].textContent;
   if (lastBeta) {
     let res = transDegr(lastBeta);
-    degSum += Number(res.deg);
-    minSum += Number(res.min);
-    secSum += Number(res.sec);
+    sec = fromSecMinDegToSec(res.deg, res.min, res.sec);
+    sum += sec;
   }
-
-  let resCorn = calcSecToMinToDeg(degSum, minSum, secSum);
-
+  let resCorn = fromSecToSecMinDeg(sum);
   writeDegr(resCorn.deg, resCorn.min, resCorn.sec, document.getElementById('calcCornSum'));
-}
-
-function calcSecToMinToDeg(deg, min, sec) {
-  deg = Number(deg);
-  sec = Number(sec);
-  min = Number(min);
-  if (sec >= 60) {
-    min += Math.trunc(sec / 60);
-    if (Math.trunc(sec / 60) == sec / 60) {
-      sec = '';
-    } else {
-      sec = Math.round((sec / 60 - Math.trunc(sec / 60)) * 60);
-    }
-  }
-
-  if (min >= 60) {
-    deg += Math.trunc(min / 60);
-    if (Math.trunc(min / 60) == min / 60) {
-      if (sec !== '') {
-        min = 0;
-      } else {
-        min = '';
-      }
-    } else {
-      if (sec == 0) {
-        min = ((min / 60 - Math.trunc(min / 60)) * 60).toFixed(1);
-      } else {
-        min = Math.round((min / 60 - Math.trunc(min / 60)) * 60);
-      }
-    }
-  }
-  return {
-    deg,
-    min,
-    sec
-  }
 }
 
 function transDegr(string) {
   let deg, min, sec;
   if (string.includes('°')) {
     string = string.split('°');
-    deg = string.shift();
+    deg = Number(string.shift());
   } else {
     deg = 0;
   }
   if (string.toString().includes('\'')) {
     string = string.toString().split("'");
-    min = string.shift();
+    min = Number(string.shift());
   } else {
     min = 0;
   }
   if (string.toString().includes('"')) {
     string = string.toString().split('"');
-    sec = string.shift();
+    sec = Number(string.shift());
   } else {
     sec = 0;
   }
@@ -671,96 +604,96 @@ function transDegr(string) {
 }
 
 function calcTeorCorners() {
+  let sumTeorIn, sumTeorOut, sum;
   let countBetas = document.querySelectorAll('.betaLine').length;
   let resCorn = document.getElementById('calcCornSum');
   let teorCornSum = document.getElementById('teorCornSum');
   let res = transDegr(resCorn.textContent);
-
+  res = fromSecMinDegToSec(res.deg, res.min, res.sec);
   let fBeta;
+  if (traverseType == '1') {
+    sumTeorIn = 648000 * (countBetas - 2);
+    sumTeorOut = 648000 * (countBetas + 2);
 
-  let sumTeorIn = 180 * (countBetas - 2);
-  let sumTeorOut = 180 * (countBetas + 2);
+    if ((sumTeorIn - 3600) < res && res < (sumTeorIn + 3600)) {
+      sum = fromSecToSecMinDeg(sumTeorIn);
+    } else if (sumTeorOut - 3600 < res && res < sumTeorOut + 3600) {
+      sum = fromSecToSecMinDeg(sumTeorOut);
+    } else {
+      alert('Невірно введені кути, розрахунок неможливий');
+    }
 
-  if (res.deg == sumTeorIn || res.deg == (sumTeorIn - 1)) {
-    teorCornSum.innerHTML = sumTeorIn + '&deg;'
-  } else if (res.deg == sumTeorOut || res.deg == (sumTeorOut - 1)) {
-    teorCornSum.innerHTML = sumTeorOut + '&deg;'
+  } else if (traverseType == '2') {
+    let alphaCorn = transDegr(alpha.textContent);
+    alphaCorn = fromSecMinDegToSec(alphaCorn.deg, alphaCorn.min, alphaCorn.sec);
+    let lastCorn = transDegr(lastAlpha.textContent);
+    lastCorn = fromSecMinDegToSec(lastCorn.deg, lastCorn.min, lastCorn.sec);
+
+    if (cornersDirection == '1') {
+      sum = fromSecToSecMinDeg((alphaCorn - lastCorn) + (648000 * countBetas));
+    } else if (cornersDirection == '2') {
+      sum = fromSecToSecMinDeg((lastCorn - alphaCorn) + (648000 * countBetas));
+    }
+  }
+  writeDegr(sum.deg, sum.min, sum.sec, teorCornSum);
+
+  sum = fromSecMinDegToSec(sum.deg, sum.min, sum.sec);
+
+  fBeta = (res - sum);
+  let sign = fBeta.toString().substr(0, 1);
+
+  if (sign == '-') {
+    fBeta = fromSecToSecMinDeg(Number(fBeta.toString().slice(1)));
   } else {
-    alert('Невірно введені кути, розрахунок неможливий')
+    sign = '+';
+    fBeta = fromSecToSecMinDeg(fBeta);
   }
+  writeDegr(fBeta.deg, fBeta.min, fBeta.sec, fBetaSum);
+  fBetaSum.innerHTML = sign + fBetaSum.textContent;
 
-  if (res.deg == sumTeorIn || res.deg == sumTeorOut) {
-    if ((res.min.length == 0 || res.min == 0) && (res.sec.length == 0 || res.sec == 0)) {
-      fBeta = 0;
-    } else if (res.min > 0 && (res.sec.length == 0 || res.sec == 0)) {
-      fBeta = '+' + res.min + "'";
-    } else if (res.min >= 0 && res.sec > 0) {
-      fBeta = '+' + res.min + "'" + res.sec + '"';
-    }
-  } else if (res.deg == (sumTeorIn - 1) || res.deg == (sumTeorOut - 1)) {
-    if ((res.min.length == 0 || res.min == 0) && (res.sec.length == 0 || res.sec == 0)) {
-      fBeta = '-' + 1 + '&deg;'; // ask
-    } else if (res.min > 0 && (res.sec.length == 0 || res.sec == 0)) {
-      fBeta = '-' + (60 - res.min) + "'";
-    } else if (res.min >= 0 && res.sec > 0) {
-      fBeta = '-' + (59 - res.min) + "'" + (60 - res.sec) + '"';
-    }
-  }
-  document.getElementById('fBeta').innerHTML = fBeta;
   //fBetaValid(fBeta, countBetas);
-  shareFBeta(fBeta, countBetas);
+  // if (fBetaValid(fBeta, countBetas)){
+  //shareFBeta(fBeta, countBetas, sign);
+  //}
+  shareFBeta(fBeta, countBetas, sign);
 }
 
-function fBetaValid(x, countBetas) {
-
-  x = x.toString().slice(1);
-  let res = transDegr(x);
-  let control;
+function fBetaValid(fBeta, countBetas) {
+  fBeta = fromSecMinDegToSec(fBeta.deg, fBeta.min, fBeta.sec);
+  let control, res;
   if (classValue == '1') {
-    control = 1 * Math.sqrt(countBetas);
-    value = Number(res.min) + Number(res.sec / 60);
+    control = (1 * Math.sqrt(countBetas)) * 60;
   } else if (classValue == '2') {
     control = 10 * Math.sqrt(countBetas);
-    value = Number(res.min * 60) + Number(res.sec);
   } else if (classValue == '3') {
     control = 20 * Math.sqrt(countBetas);
-    value = Number(res.min * 60) + Number(res.sec);
   } else {
     control = 5 * Math.sqrt(countBetas);
-    value = Number(res.min * 60) + Number(res.sec);
   }
-  console.log(value)
-  console.log(control)
-  if (value > control) {
-    alert("Кутова нев`язка більша за допустиму, розрахунок зупинено")
+  if (fBeta > control) {
+    alert("Кутова нев`язка більша за допустиму, розрахунок зупинено");
+    res = false;
   } else {
-    // shareFBeta(x);
+    res = true;
   }
+  return res;
 }
 
-function shareFBeta(x, countBetas) {
-  let sign = x.substr(0, 1);
+function shareFBeta(fBeta, countBetas, sign) {
   let distances = document.querySelectorAll('.measureLength');
   let distList = [];
   distances.forEach(elem => {
     distList.push(elem.textContent);
   })
-
   let minDistance = Math.min(...distList);
-
   distances.forEach(elem => {
     if (elem.textContent == minDistance) {
       elem.classList.add('minLength');
     }
   })
-
-  x = x.toString().slice(1);
-
-  let res = transDegr(x);
-  let sum = (Number(res.min) * 60 + Number(res.sec))
-  let d = sum / countBetas;
+  fBeta = fromSecMinDegToSec(fBeta.deg, fBeta.min, fBeta.sec);
+  let d = fBeta / countBetas;
   let fBetas = document.querySelectorAll('.fBeta');
-
   if ((d - Math.trunc(d)) == 0) {
     fBetas.forEach(element => {
       element.innerHTML = d + '"'
@@ -772,11 +705,10 @@ function shareFBeta(x, countBetas) {
     let elements = document.querySelectorAll('.minLength');
     elements.forEach(elem => {
       let value = elem.parentElement.nextElementSibling.children[2].textContent;
-      let res = Number(value.split('"').shift()) + ((sum - (Math.trunc(d) * countBetas)) / elements.length);
+      let res = Number(value.split('"').shift()) + ((fBeta - (Math.trunc(d) * countBetas)) / elements.length);
       elem.parentElement.nextElementSibling.children[2].innerHTML = res + '"';
     })
   }
-
   fBetas.forEach(elem => {
     if (sign == '-') {
       elem.innerHTML = '+' + elem.textContent;
@@ -784,27 +716,80 @@ function shareFBeta(x, countBetas) {
       elem.innerHTML = '-' + elem.textContent;
     }
   })
-  correctedCorners(sign);
+  correctedCorners();
 }
 
-function correctedCorners(sign) {
+function correctedCorners() {
   let lines = document.querySelectorAll('.betaLine');
-  if (sign == '-') {
-    lines.forEach(elem => {
-      let corn = transDegr(elem.children[1].textContent);
-      let res = (Number(corn.sec)) + Number(transDegr(elem.children[2].textContent).sec);
-      let corCorn = calcSecToMinToDeg(corn.deg, corn.min, res);
+  lines.forEach(elem => {
+    let corn = transDegr(elem.children[1].textContent);
+    let sec = fromSecMinDegToSec(corn.deg, corn.min, corn.sec);
+    let res = (sec + Number(transDegr(elem.children[2].textContent).sec));
+    let sign = res.toString().substr(0, 1);
+    if (sign == '-') {
+      res = fromSecToSecMinDeg(Number(res.toString().slice(1)));
+    } else {
+      sign = '';
+      res = fromSecToSecMinDeg(res);
+    }
+    writeDegr(res.deg, res.min, res.sec, elem.children[3]);
+    elem.children[3].innerHTML = sign + elem.children[3].textContent;
+  })
+  calcAlphaCorners();
+}
 
-      writeDegr(corCorn.deg, corCorn.min, corCorn.sec, elem.children[3]);
-    })
-  } else if (sign == "+") {
-    lines.forEach(elem => {
-      let corn = transDegr(elem.children[1].textContent);
-      let res = ((Number(corn.deg)*60 + Number(corn.min))*60 + Number(corn.sec)) + (Number(transDegr(elem.children[2].textContent).sec));
-      let sec = Math.round((res/60 - Math.trunc(res/60)) * 60);
-      let min = Math.round((Math.trunc(res/60)/60 - Math.trunc(Math.trunc(res/60)/60)) * 60);
-      let deg =  Math.trunc(Math.trunc(res/60)/60);
-       writeDegr(deg, min, sec, elem.children[3]);
-    })
-  }
+function fromSecToSecMinDeg(res) {
+  let sec = Math.round((res / 60 - Math.trunc(res / 60)) * 60);
+  let min = Math.round((Math.trunc(res / 60) / 60 - Math.trunc(Math.trunc(res / 60) / 60)) * 60);
+  let deg = Math.trunc(Math.trunc(res / 60) / 60);
+  return {
+    deg,
+    min,
+    sec
+  };
+}
+
+function fromSecMinDegToSec(deg, min, sec) {
+  if(deg.toString().substr(0, 1) == '-'){
+    deg = Number(deg.toString().slice(1));
+    sec = -((Number(deg) * 60 + Number(min)) * 60 + Number(sec));
+  }else{
+  sec = ((Number(deg) * 60 + Number(min)) * 60 + Number(sec));}
+  return sec;
+}
+
+function calcAlphaCorners() {
+  let res;
+  let corners = document.querySelectorAll('.alphaCorner');
+
+  corners.forEach(elem => {
+    let elemIndex = Array.prototype.slice.call(corners).indexOf(elem);
+    let betaCorner = transDegr(elem.parentElement.nextElementSibling.children[3].textContent);
+    console.log(betaCorner)
+    elem = transDegr(elem.textContent);
+    elem = fromSecMinDegToSec(elem.deg, elem.min, elem.sec);
+
+    beta = fromSecMinDegToSec(betaCorner.deg, betaCorner.min, betaCorner.sec);
+    console.log(elem);
+    console.log(beta);
+    if (cornersDirection == '1') {
+      res = elem - beta + (648000);
+    } else if (cornersDirection == '2') {
+      res = elem + beta - (648000);
+    }
+
+    if (res > 1296000) {
+      res = res - 1296000;
+    } else if (res < 0) {
+      res = res + 1296000;
+    }
+
+    res = fromSecToSecMinDeg(res);
+    if (corners[elemIndex + 1]) {
+      writeDegr(res.deg, res.min, res.sec, corners[elemIndex + 1]);
+    } else {
+      console.log(res)
+      console.log(JSON.stringify(res) === JSON.stringify(transDegr(document.getElementById('lastAlpha').textContent)))
+    }
+  })
 }
