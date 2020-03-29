@@ -130,7 +130,7 @@
           <div>
             <p>та
               <div id="firstCornPointChoose">
-                <input type="radio" name="tasks" id="corner" checked><label for="corner">дирекційного кута</label>
+                <input type="radio" name="tasks" id="corner" checked><label for="corner">дирекційний кут</label>
                 <span>або</span>
                 <input type="radio" name="tasks" id="twoPoints"><label for="twoPoints">координати наступної
                   точки</label>
@@ -173,8 +173,8 @@
           <div>
             <p>та
               <div id="lastCornPointChoose">
-                <input type="radio" name="lastTasks" id="lastCorner" checked><label for="lastCorner">дирекційного
-                  кута</label>
+                <input type="radio" name="lastTasks" id="lastCorner" checked><label for="lastCorner">дирекційний
+                  кут</label>
                 <span>або</span>
                    <input type="radio" name="lastTasks" id="lastTwoPoints"><label for="lastTwoPoints">координати
                   наступної точки</label>
@@ -182,7 +182,7 @@
             </p>
           </div>
 
-          <div id="lastPointCoordinates" style="display:block;" id="lastPoint">
+          <div id="lastPointCoordinates" style="display:none;" id="lastPoint">
             <p><label for="lastPointX2">X2:</label> <input type="number" min="0" name="lastPointX2" id="lastPointX2"
                 step="0.001"></p>
             <p><label for="lastPointY2">Y2: <input type="number" name="lastPointY2" id="lastPointY2" min="0"
@@ -286,8 +286,8 @@
         <td class="fBeta"></td>
         <td class="correctedCorner"></td>
         <td colspan="10"></td>
-        <td class="firstValues" id="secondPointXCoordinate"></td>
-        <td class="firstValues" id="secondPointYCoordinate"></td>
+        <td class="firstValues xClass" id="secondPointXCoordinate"></td>
+        <td class="firstValues yClass" id="secondPointYCoordinate"></td>
       </tr>
 
       <tr id="addLastBeta" class="betaLine">
@@ -316,15 +316,15 @@
         <td id="fBeta"></td>
         <td id="teorCornSum"></td>
         <td></td>
+        <td id="perimeter"></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td id="sumX"></td>
+        <td id="sumY"></td>
+        <td id="sumMinTeorX"></td>
+        <td id="sumMinTeorY"></td>
+        <td id="teorSumX"></td>
+        <td id="teorSumY"></td>
         <td></td>
         <td></td>
       </tr>

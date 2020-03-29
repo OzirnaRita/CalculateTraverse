@@ -25,10 +25,7 @@ let secFields = document.querySelectorAll('.cornerSec');
 let table = document.getElementById('table');
 let rows = table.getElementsByTagName('tr');
 
-let traverseType = document.getElementById('traverseType').value;
-
 let classValue = document.getElementById('classAccuracy').value;
-let cornersDirection = document.getElementById('direction').value;
 let alpha = document.getElementById('firstAlpha');
 let lastAlpha = document.getElementById('lastAlpha');
 let fBetaSum = document.getElementById('fBeta');
@@ -274,7 +271,7 @@ function countDegr(x, y, x2, y2) {
     cornerMin = afterPoint.toString().split('.')[0];
     let afterMinPoint = Number('0' + '.' + afterPoint.toString().split('.')[1]) * 60;
 
-    cornerSec = afterMinPoint.toFixed(3)
+    cornerSec = Math.round(afterMinPoint)
     cornerDegr = cornerDegr.toString().split('.')[0] + '&deg;' + cornerMin + "'" + cornerSec + '"'
   } else {
     cornerDegr = cornerDegr + '&deg;';
@@ -382,7 +379,7 @@ function add() {
       let afterBetaLines = document.querySelectorAll('.afterBeta');
       let lastAfterBeta = afterBetaLines[afterBetaLines.length - 1];
 
-      lastAfterBeta.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td></td><td></td><td class="fBeta"></td><td  class="correctedCorner"></td><td colspan="10"></td><td></td><td></td></tr>');
+      lastAfterBeta.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td></td><td></td><td class="fBeta"></td><td  class="correctedCorner"></td><td colspan="10"></td><td class="xClass"></td><td class="yClass"></td></tr>');
       betaCells = document.querySelectorAll('.addBeta');
       lastBeta = betaCells[betaCells.length - 1];
       writeDegr(degr, min, sec, lastBeta.cells[1])
@@ -396,12 +393,12 @@ function add() {
 };
 
 function afterBeta() {
-  let degrees;
+  let degrees; 
   let length = secondForm.length.value;
   let betaCells = document.querySelectorAll('.addBeta');
   let lastBeta = betaCells[betaCells.length - 1];
 
-  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td class="alphaCorner"></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
+  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td class="alphaCorner"></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td class="fX"></td><td class="fY"></td><td></td><td></td><td colspan="2"></td></tr>')
   let measureLengths = document.querySelectorAll('.measureLength');
   let lastmeasureLength = measureLengths[measureLengths.length - 1];
   let measureDistance = document.querySelectorAll('.measureDistance');
@@ -411,7 +408,7 @@ function afterBeta() {
 
   if (document.getElementById("measureDistance").selected) {
 
-    lastMeasureDistance.innerHTML = length;
+    lastMeasureDistance.innerHTML = Number(length).toFixed(2);
 
     let gammaDegr = secondForm.gammaCornerDegr.value;
     let gammaMin = secondForm.gammaCornerMin.value;
@@ -431,10 +428,10 @@ function afterBeta() {
 
     radians = (degrees * Math.PI) / 180;
     length = Math.cos(radians) * length;
-    lastmeasureLength.innerHTML = degrees != 0 ? length.toFixed(3) : length;
+    lastmeasureLength.innerHTML = degrees != 0 ? length.toFixed(2) : length;
 
   } else {
-    lastmeasureLength.innerHTML = Number(length).toFixed(3);
+    lastmeasureLength.innerHTML = Number(length).toFixed(2);
   }
 }
 
@@ -611,13 +608,15 @@ function calcTeorCorners() {
   let res = transDegr(resCorn.textContent);
   res = fromSecMinDegToSec(res.deg, res.min, res.sec);
   let fBeta;
+  let traverseType = document.getElementById('traverseType').value;
+  let cornersDirection = document.getElementById('direction').value;
   if (traverseType == '1') {
     sumTeorIn = 648000 * (countBetas - 2);
     sumTeorOut = 648000 * (countBetas + 2);
 
     if ((sumTeorIn - 3600) < res && res < (sumTeorIn + 3600)) {
       sum = fromSecToSecMinDeg(sumTeorIn);
-    } else if (sumTeorOut - 3600 < res && res < sumTeorOut + 3600) {
+    } else if ((sumTeorOut - 3600) < res && res < (sumTeorOut + 3600)) {
       sum = fromSecToSecMinDeg(sumTeorOut);
     } else {
       alert('Невірно введені кути, розрахунок неможливий');
@@ -628,7 +627,6 @@ function calcTeorCorners() {
     alphaCorn = fromSecMinDegToSec(alphaCorn.deg, alphaCorn.min, alphaCorn.sec);
     let lastCorn = transDegr(lastAlpha.textContent);
     lastCorn = fromSecMinDegToSec(lastCorn.deg, lastCorn.min, lastCorn.sec);
-
     if (cornersDirection == '1') {
       sum = fromSecToSecMinDeg((alphaCorn - lastCorn) + (648000 * countBetas));
     } else if (cornersDirection == '2') {
@@ -686,9 +684,13 @@ function shareFBeta(fBeta, countBetas, sign) {
     distList.push(elem.textContent);
   })
   let minDistance = Math.min(...distList);
+  let maxDistance = Math.max(...distList);
   distances.forEach(elem => {
     if (elem.textContent == minDistance) {
       elem.classList.add('minLength');
+    }
+    if (elem.textContent == maxDistance) {
+      elem.classList.add('maxLength');
     }
   })
   fBeta = fromSecMinDegToSec(fBeta.deg, fBeta.min, fBeta.sec);
@@ -761,17 +763,17 @@ function fromSecMinDegToSec(deg, min, sec) {
 function calcAlphaCorners() {
   let res;
   let corners = document.querySelectorAll('.alphaCorner');
+  let cornersDirection = document.getElementById('direction').value;
 
   corners.forEach(elem => {
     let elemIndex = Array.prototype.slice.call(corners).indexOf(elem);
     let betaCorner = transDegr(elem.parentElement.nextElementSibling.children[3].textContent);
-    console.log(betaCorner)
+
     elem = transDegr(elem.textContent);
     elem = fromSecMinDegToSec(elem.deg, elem.min, elem.sec);
 
     beta = fromSecMinDegToSec(betaCorner.deg, betaCorner.min, betaCorner.sec);
-    console.log(elem);
-    console.log(beta);
+   
     if (cornersDirection == '1') {
       res = elem - beta + (648000);
     } else if (cornersDirection == '2') {
@@ -790,6 +792,124 @@ function calcAlphaCorners() {
     } else {
       console.log(res)
       console.log(JSON.stringify(res) === JSON.stringify(transDegr(document.getElementById('lastAlpha').textContent)))
+    }
+  })
+  calculatePerimetr();
+}
+
+function calculatePerimetr(){
+  let lengths = document.querySelectorAll('.measureLength');
+  let sum  = 0;
+  lengths.forEach(elem => {
+    sum += Number(elem.textContent);
+  })
+  document.getElementById('perimeter').innerHTML = sum.toFixed(2);
+  countDeltX();
+}
+
+function countDeltX(){
+  let lines = document.querySelectorAll('.afterBeta'); 
+  let sumX = 0;
+  let sumY = 0;
+  lines.forEach(elem => {
+    let corn = transDegr(elem.children[1].textContent);
+    let degrees =  Number(corn.deg) + ((Number(corn.min) + Number(corn.sec)/60)/60);
+    let radians = (degrees * Math.PI)/180;
+    let length = Number(elem.children[2].textContent)
+    deltX = Number((Math.cos(radians) * length).toFixed(2));
+    deltY = Number((Math.sin(radians) * length).toFixed(2));
+    sumX += deltX;
+    sumY += deltY;
+    elem.children[5].innerHTML = deltX;
+    elem.children[6].innerHTML = deltY;
+})
+let teorX = Number(document.getElementById('penultPointXCoordinate').textContent) - Number(document.getElementById('secondPointXCoordinate').textContent);
+let teorY = Number(document.getElementById('penultPointYCoordinate').textContent) - Number(document.getElementById('secondPointYCoordinate').textContent);
+
+document.getElementById('sumX').innerHTML = sumX.toFixed(2);
+document.getElementById('sumY').innerHTML = sumY.toFixed(2);
+document.getElementById('teorSumX').innerHTML = teorX.toFixed(2);
+document.getElementById('teorSumY').innerHTML = teorY.toFixed(2);
+  let xRes = Number((sumX - teorX).toFixed(2));
+  let yRes = Number((sumY - teorY).toFixed(2));
+document.getElementById('sumMinTeorX').innerHTML = xRes;
+document.getElementById('sumMinTeorY').innerHTML = yRes;
+
+let lengths = document.querySelectorAll('.measureLength').length;
+let per = Number(document.getElementById('perimeter').textContent);
+lines.forEach(elem => {
+elem.children[7].innerHTML = -(((xRes / per) * Number(elem.children[2].textContent)).toFixed(2));
+elem.children[8].innerHTML = -(((yRes / per) * Number(elem.children[2].textContent)).toFixed(2));
+})
+
+let xPractSum = 0;
+let yPractSum = 0;
+let fXs = document.querySelectorAll('.fX');
+let fYs = document.querySelectorAll('.fY');
+fXs.forEach(elem =>{
+  xPractSum += Number(elem.textContent);
+})
+fYs.forEach(elem =>{
+  yPractSum += Number(elem.textContent);
+})
+
+let maxLengths = document.querySelector('.maxLength');
+let minLengths = document.querySelector('.minLength');
+let valueX = maxLengths.parentElement.children[7];
+let valueY = maxLengths.parentElement.children[8];
+let minX = Number(minLengths.parentElement.children[7].textContent);
+let minY = Number(minLengths.parentElement.children[8].textContent);
+
+if((xRes + Number(xPractSum.toFixed(2))) > 0){
+  if(Math.abs(minX) > 0 ){
+  minLengths.parentElement.children[7].innerHTML = (-0.01 + minX).toFixed(2);
+  }else{
+  maxLengths.parentElement.children[7].innerHTML = (-0.01 + Number(valueX.textContent)).toFixed(2);
+}
+}
+if((xRes + Number(xPractSum.toFixed(2))) < 0){
+  if(Math.abs(minX) > 0 ){
+    minLengths.parentElement.children[7].innerHTML = (+0.01 + minX).toFixed(2);
+    }else{
+    maxLengths.parentElement.children[7].innerHTML = (+0.01 + Number(valueX.textContent)).toFixed(2);
+  }
+}
+if((yRes + Number(yPractSum.toFixed(2))) > 0){
+  if(Math.abs(minY) > 0 ){
+    minLengths.parentElement.children[8].innerHTML = (-0.01 + minY).toFixed(2);
+    }else{
+    maxLengths.parentElement.children[8].innerHTML = (-0.01 + Number(valueY.textContent)).toFixed(2);
+  }
+}
+if((yRes + Number(yPractSum.toFixed(2))) < 0){
+  if(Math.abs(minY) > 0 ){
+    minLengths.parentElement.children[8].innerHTML = (+0.01 + minY).toFixed(2);
+    }else{
+    maxLengths.parentElement.children[8].innerHTML = (+0.01 + Number(valueY.textContent)).toFixed(2);
+  }
+}
+
+lines.forEach(elem =>{
+  elem.children[9].innerHTML = (Number(elem.children[5].textContent) + Number(elem.children[7].textContent)).toFixed(2);
+  elem.children[10].innerHTML = (Number(elem.children[6].textContent) + Number(elem.children[8].textContent)).toFixed(2);
+})
+let xPoints = document.querySelectorAll('.xClass');
+let yPoints = document.querySelectorAll('.yClass');
+calcPoints(xPoints, 9);
+calcPoints(yPoints, 10);
+}
+
+function calcPoints(el, index) {
+  let res;
+
+  el.forEach(elem => {
+    let elemIndex = Array.prototype.slice.call(el).indexOf(elem);
+    let deltPoint = Number(elem.parentElement.nextElementSibling.children[index].textContent)
+    res = (Number(elem.textContent) + deltPoint).toFixed(2)
+    if (el[elemIndex + 1]) {
+      el[elemIndex + 1].innerHTML = res;
+    } else {
+      console.log(res);
     }
   })
 }
