@@ -2,6 +2,8 @@ let pointX2 = document.getElementById('pointX2');
 let pointY2 = document.getElementById('pointY2');
 let lastPointX2 = document.getElementById('lastPointX2');
 let lastPointY2 = document.getElementById('lastPointY2');
+let pointPenultX1 = document.getElementById('pointPenultX1');
+let pointPenultY1 = document.getElementById('pointPenultY1');
 let cornerDegrDirect = document.getElementById('cornerDegrDirect');
 let cornerMinDirect = document.getElementById('cornerMinDirect');
 let cornerSecDirect = document.getElementById('cornerSecDirect');
@@ -18,6 +20,7 @@ let lastPointCoordinates = document.getElementById('lastPointCoordinates');
 
 let form = document.getElementById('settingsBlock');
 let secondForm = document.getElementById('sideOfTraverse');
+let firstLengthVal = document.getElementById('firstLengthVal');
 
 let fields, secondFormFields;
 let minFields = document.querySelectorAll('.cornerMin');
@@ -33,6 +36,7 @@ document.addEventListener('click', cornerMin);
 
 
 if (form) {
+  form.addEventListener('click', openOrCloseTraverse);
   form.addEventListener('click', selectTeoStep);
   form.addEventListener('click', selectCornerOrPoints);
   form.addEventListener('click', selectLastCornerOrPoints);
@@ -64,7 +68,32 @@ function cornerMin() {
   }
 }
 
+function openOrCloseTraverse() {
+  let traverseType = document.getElementById('traverseType').value;
+  if (traverseType == '1') {
+    document.getElementById('lastCoordinates').style.display = 'none';
+    document.getElementById('selectPointOrCorner').style.display = 'none';
+    document.getElementById('labForCorn').style.display = 'block';
+    document.getElementById('firstLength').style.display = 'block';
+    pointPenultX1.required = false;
+    pointPenultY1.required = false;
+    lastCornerDegrDirect.required = false;
+    firstLengthVal.required = true;
+  } else {
+    document.getElementById('lastCoordinates').style.display = 'block';
+    document.getElementById('selectPointOrCorner').style.display = 'block';
+    document.getElementById('labForCorn').style.display = 'none';
+    document.getElementById('firstLength').style.display = 'none';
+    pointPenultX1.required = true;
+    pointPenultY1.required = true;
+    lastCornerDegrDirect.required = true;
+    firstLengthVal.required = false;
+  }
+
+}
+
 function selectCornerOrPoints() {
+  let traverseType = document.getElementById('traverseType').value;
   if (document.getElementById("corner").checked) {
     cornerBlock.style.display = 'block';
     secondPointCoordinates.style.display = 'none';
@@ -76,6 +105,7 @@ function selectCornerOrPoints() {
     pointY2.classList.remove("invalid");
     cornerDegrDirect.required = true;
   } else {
+    if(traverseType !== '1'){
     cornerBlock.style.display = 'none';
     secondPointCoordinates.style.display = 'block';
     cornerDegrDirect.required = false;
@@ -89,16 +119,28 @@ function selectCornerOrPoints() {
     if (cornerSecDirect.value) {
       cornerSecDirect.value = ''
     };
+  }else{
+    cornerBlock.style.display = 'block';
+    secondPointCoordinates.style.display = 'none';
+    cornerDegrDirect.required = true;
+    pointX2.required = false;
+    pointY2.required = false;
+  }
   }
 }
 
 function selectLastCornerOrPoints() {
+  let traverseType = document.getElementById('traverseType').value;
   if (document.getElementById("lastCorner").checked) {
     lastCornerBlock.style.display = 'block';
     lastPointCoordinates.style.display = 'none';
     lastPointX2.required = false;
     lastPointY2.required = false;
-    lastCornerDegrDirect.required = true;
+    if (traverseType !== "1") {
+      lastCornerDegrDirect.required = true;
+    } else {
+      lastCornerDegrDirect.required = false;
+    }
     lastPointX2.value = '';
     lastPointY2.value = '';
     lastPointX2.classList.remove("invalid");
@@ -158,27 +200,6 @@ function addSettings() {
   validationFunc(fields);
   lengthLimitation();
   if (form.querySelectorAll('.invalid').length == 0) {
-    /*const data = formToJSON(form.elements);
-    console.log(data)
-    console.log(JSON.stringify(data))
-
-
-    let url="https://kizv.gov.ua/post.php";
-
-        fetch(url,{
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers:{
-          //'Access-Control-Allow-Origin': 'https://kizv.gov.ua/post.php',
-         'Content-Type':'application/x-www-form-urlencoded'
-         //'Access-Control-Allow-Credentials': true}
-        }
-      })
-      .then(response => console.log(response))
-      
-       //form.style.display = "none";
-        //secondForm.style.display = "block";
-        */
     addToTable();
     document.getElementById('sideOfTraverseButton').removeAttribute("disabled");
     document.getElementById('settingsButton').disabled = true;
@@ -203,7 +224,10 @@ function addToTable() {
   let lastY1 = form.pointPenultY1.value;
   let lastX2 = form.lastPointX2.value;
   let lastY2 = form.lastPointY2.value;
-
+  let length = form.firstLengthVal.value;
+  let traverseType = document.getElementById('traverseType').value;
+  let title = document.getElementById('titleLine');
+  if(traverseType !== '1'){
 
   if (document.getElementById("corner").checked) {
     document.getElementById('firstLine').style.display = 'none';
@@ -234,6 +258,33 @@ function addToTable() {
 
     lastAlpha.innerHTML = countDegr(lastX1, lastY1, lastX2, lastY2);
   }
+}else{
+  let openTravs = document.querySelectorAll('.openTrav');
+  openTravs.forEach(elem =>{
+    
+   if (elem.parentNode) {
+  elem.parentNode.removeChild(elem);
+}
+  })
+  document.getElementById('lastLine').style.display = 'none';
+  title.insertAdjacentHTML('afterend', '<tr class="addBeta"><td class="firstValues">Бт2</td><td colspan="13"></td><td class="firstValues xClass" id="secondPointXCoordinate"></td><td class="firstValues yClass" id="secondPointYCoordinate"></td></tr>');
+  
+  document.getElementById('secondPointXCoordinate').innerHTML = X1;
+  document.getElementById('secondPointYCoordinate').innerHTML = Y1;
+  let bet = document.querySelector('.addBeta');
+  bet.insertAdjacentHTML('afterend', '<tr class="afterBeta" ><td colspan="4"></td><td class="firstValues alphaCorner" id="firstAlpha"></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td class="fX"></td><td class="fY"></td><td></td><td></td><td colspan="2"></td></tr>');
+  let alpha = document.getElementById('firstAlpha');
+  let leng = document.querySelector('.measureLength');
+  leng.innerHTML = length;
+  writeDegr(degr, min, sec, alpha);
+  writeDegr(degr, min, sec, lastAlpha);
+  document.getElementById('penultPointXCoordinate').innerHTML = X1;
+  document.getElementById('penultPointYCoordinate').innerHTML = Y1;
+  let lastBetaName = document.getElementById('addLastBeta').cells[0];
+  lastBetaName.innerHTML = 'Бп2';
+  let afterBet = document.querySelector('.afterBeta');
+  afterBet.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td>т1</td><td></td><td class="fBeta"></td><td  class="correctedCorner"></td><td colspan="10"></td><td class="xClass"></td><td class="yClass"></td></tr>')
+}
 }
 
 function writeDegr(deg, min, sec, value) {
@@ -354,6 +405,7 @@ function addLastCorner() {
     document.getElementById('sideOfTraverseButton').disabled = true;
     document.getElementById('lastBetaCorner').disabled = true;
     secondForm.reset();
+    secondForm.style.display = "none";
     calcMeasureCorners();
     calcTeorCorners();
   }
@@ -369,7 +421,7 @@ function add() {
     //secondForm.action = '#';
     // secondForm.method = 'GET'
     let betaCells = document.querySelectorAll('.addBeta');
-
+    console.log(betaCells)
     let lastBeta = betaCells[betaCells.length - 1];
 
     if (lastBeta.cells[1].firstChild == null) {
@@ -393,12 +445,12 @@ function add() {
 };
 
 function afterBeta() {
-  let degrees; 
+  let degrees;
   let length = secondForm.length.value;
   let betaCells = document.querySelectorAll('.addBeta');
   let lastBeta = betaCells[betaCells.length - 1];
 
-  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td class="alphaCorner"></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td class="fX"></td><td class="fY"></td><td></td><td></td><td colspan="2"></td></tr>')
+  lastBeta.insertAdjacentHTML('afterend', '<tr class="afterBeta"><td colspan="4"></td><td class="alphaCorner"></td><td class="measureLength"></td><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td class="fX"></td><td class="fY"></td><td></td><td></td><td colspan="2"></td></tr>')
   let measureLengths = document.querySelectorAll('.measureLength');
   let lastmeasureLength = measureLengths[measureLengths.length - 1];
   let measureDistance = document.querySelectorAll('.measureDistance');
@@ -602,6 +654,7 @@ function transDegr(string) {
 
 function calcTeorCorners() {
   let sumTeorIn, sumTeorOut, sum;
+  console.log(document.querySelectorAll('.betaLine'));
   let countBetas = document.querySelectorAll('.betaLine').length;
   let resCorn = document.getElementById('calcCornSum');
   let teorCornSum = document.getElementById('teorCornSum');
@@ -614,9 +667,9 @@ function calcTeorCorners() {
     sumTeorIn = 648000 * (countBetas - 2);
     sumTeorOut = 648000 * (countBetas + 2);
 
-    if ((sumTeorIn - 3600) < res && res < (sumTeorIn + 3600)) {
+    if ((sumTeorIn - 7200) < res && res < (sumTeorIn + 7200)) {
       sum = fromSecToSecMinDeg(sumTeorIn);
-    } else if ((sumTeorOut - 3600) < res && res < (sumTeorOut + 3600)) {
+    } else if ((sumTeorOut - 7200) < res && res < (sumTeorOut + 7200)) {
       sum = fromSecToSecMinDeg(sumTeorOut);
     } else {
       alert('Невірно введені кути, розрахунок неможливий');
@@ -649,11 +702,11 @@ function calcTeorCorners() {
   writeDegr(fBeta.deg, fBeta.min, fBeta.sec, fBetaSum);
   fBetaSum.innerHTML = sign + fBetaSum.textContent;
 
-  //fBetaValid(fBeta, countBetas);
-  // if (fBetaValid(fBeta, countBetas)){
-  //shareFBeta(fBeta, countBetas, sign);
-  //}
+  
+  if (fBetaValid(fBeta, countBetas)){
   shareFBeta(fBeta, countBetas, sign);
+  }
+  //shareFBeta(fBeta, countBetas, sign);
 }
 
 function fBetaValid(fBeta, countBetas) {
@@ -752,11 +805,12 @@ function fromSecToSecMinDeg(res) {
 }
 
 function fromSecMinDegToSec(deg, min, sec) {
-  if(deg.toString().substr(0, 1) == '-'){
+  if (deg.toString().substr(0, 1) == '-') {
     deg = Number(deg.toString().slice(1));
     sec = -((Number(deg) * 60 + Number(min)) * 60 + Number(sec));
-  }else{
-  sec = ((Number(deg) * 60 + Number(min)) * 60 + Number(sec));}
+  } else {
+    sec = ((Number(deg) * 60 + Number(min)) * 60 + Number(sec));
+  }
   return sec;
 }
 
@@ -764,6 +818,7 @@ function calcAlphaCorners() {
   let res;
   let corners = document.querySelectorAll('.alphaCorner');
   let cornersDirection = document.getElementById('direction').value;
+  let alpha = document.getElementById('lastAlpha');
 
   corners.forEach(elem => {
     let elemIndex = Array.prototype.slice.call(corners).indexOf(elem);
@@ -773,7 +828,7 @@ function calcAlphaCorners() {
     elem = fromSecMinDegToSec(elem.deg, elem.min, elem.sec);
 
     beta = fromSecMinDegToSec(betaCorner.deg, betaCorner.min, betaCorner.sec);
-   
+
     if (cornersDirection == '1') {
       res = elem - beta + (648000);
     } else if (cornersDirection == '2') {
@@ -786,20 +841,23 @@ function calcAlphaCorners() {
       res = res + 1296000;
     }
 
-    res = fromSecToSecMinDeg(res);
-    if (corners[elemIndex + 1]) {
+    
+    if (corners[elemIndex + 1]) {res = fromSecToSecMinDeg(res);
       writeDegr(res.deg, res.min, res.sec, corners[elemIndex + 1]);
     } else {
-      console.log(res)
-      console.log(JSON.stringify(res) === JSON.stringify(transDegr(document.getElementById('lastAlpha').textContent)))
+      alpha = transDegr(alpha.textContent);
+      if(res == fromSecMinDegToSec(alpha.deg, alpha.min, alpha.sec)){
+        console.log(true)
+      }else{
+      console.log(false);
     }
-  })
+  }})
   calculatePerimetr();
 }
 
-function calculatePerimetr(){
+function calculatePerimetr() {
   let lengths = document.querySelectorAll('.measureLength');
-  let sum  = 0;
+  let sum = 0;
   lengths.forEach(elem => {
     sum += Number(elem.textContent);
   })
@@ -807,14 +865,14 @@ function calculatePerimetr(){
   countDeltX();
 }
 
-function countDeltX(){
-  let lines = document.querySelectorAll('.afterBeta'); 
+function countDeltX() {
+  let lines = document.querySelectorAll('.afterBeta');
   let sumX = 0;
   let sumY = 0;
   lines.forEach(elem => {
     let corn = transDegr(elem.children[1].textContent);
-    let degrees =  Number(corn.deg) + ((Number(corn.min) + Number(corn.sec)/60)/60);
-    let radians = (degrees * Math.PI)/180;
+    let degrees = Number(corn.deg) + ((Number(corn.min) + Number(corn.sec) / 60) / 60);
+    let radians = (degrees * Math.PI) / 180;
     let length = Number(elem.children[2].textContent)
     deltX = Number((Math.cos(radians) * length).toFixed(2));
     deltY = Number((Math.sin(radians) * length).toFixed(2));
@@ -822,89 +880,88 @@ function countDeltX(){
     sumY += deltY;
     elem.children[5].innerHTML = deltX;
     elem.children[6].innerHTML = deltY;
-})
-let teorX = Number(document.getElementById('penultPointXCoordinate').textContent) - Number(document.getElementById('secondPointXCoordinate').textContent);
-let teorY = Number(document.getElementById('penultPointYCoordinate').textContent) - Number(document.getElementById('secondPointYCoordinate').textContent);
+  })
+  let teorX = Number(document.getElementById('penultPointXCoordinate').textContent) - Number(document.getElementById('secondPointXCoordinate').textContent);
+  let teorY = Number(document.getElementById('penultPointYCoordinate').textContent) - Number(document.getElementById('secondPointYCoordinate').textContent);
 
-document.getElementById('sumX').innerHTML = sumX.toFixed(2);
-document.getElementById('sumY').innerHTML = sumY.toFixed(2);
-document.getElementById('teorSumX').innerHTML = teorX.toFixed(2);
-document.getElementById('teorSumY').innerHTML = teorY.toFixed(2);
+  document.getElementById('sumX').innerHTML = sumX.toFixed(2);
+  document.getElementById('sumY').innerHTML = sumY.toFixed(2);
+  document.getElementById('teorSumX').innerHTML = teorX.toFixed(2);
+  document.getElementById('teorSumY').innerHTML = teorY.toFixed(2);
   let xRes = Number((sumX - teorX).toFixed(2));
   let yRes = Number((sumY - teorY).toFixed(2));
-document.getElementById('sumMinTeorX').innerHTML = xRes;
-document.getElementById('sumMinTeorY').innerHTML = yRes;
+  document.getElementById('sumMinTeorX').innerHTML = xRes;
+  document.getElementById('sumMinTeorY').innerHTML = yRes;
 
-let lengths = document.querySelectorAll('.measureLength').length;
-let per = Number(document.getElementById('perimeter').textContent);
-lines.forEach(elem => {
-elem.children[7].innerHTML = -(((xRes / per) * Number(elem.children[2].textContent)).toFixed(2));
-elem.children[8].innerHTML = -(((yRes / per) * Number(elem.children[2].textContent)).toFixed(2));
-})
+  let lengths = document.querySelectorAll('.measureLength').length;
+  let per = Number(document.getElementById('perimeter').textContent);
+  lines.forEach(elem => {
+    elem.children[7].innerHTML = -(((xRes / per) * Number(elem.children[2].textContent)).toFixed(2));
+    elem.children[8].innerHTML = -(((yRes / per) * Number(elem.children[2].textContent)).toFixed(2));
+  })
 
-let xPractSum = 0;
-let yPractSum = 0;
-let fXs = document.querySelectorAll('.fX');
-let fYs = document.querySelectorAll('.fY');
-fXs.forEach(elem =>{
-  xPractSum += Number(elem.textContent);
-})
-fYs.forEach(elem =>{
-  yPractSum += Number(elem.textContent);
-})
+  let xPractSum = 0;
+  let yPractSum = 0;
+  let fXs = document.querySelectorAll('.fX');
+  let fYs = document.querySelectorAll('.fY');
+  fXs.forEach(elem => {
+    xPractSum += Number(elem.textContent);
+  })
+  fYs.forEach(elem => {
+    yPractSum += Number(elem.textContent);
+  })
 
-let maxLengths = document.querySelector('.maxLength');
-let minLengths = document.querySelector('.minLength');
-let valueX = maxLengths.parentElement.children[7];
-let valueY = maxLengths.parentElement.children[8];
-let minX = Number(minLengths.parentElement.children[7].textContent);
-let minY = Number(minLengths.parentElement.children[8].textContent);
+  let maxLengths = document.querySelector('.maxLength');
+  let minLengths = document.querySelector('.minLength');
+  let valueX = maxLengths.parentElement.children[7];
+  let valueY = maxLengths.parentElement.children[8];
+  let minX = Number(minLengths.parentElement.children[7].textContent);
+  let minY = Number(minLengths.parentElement.children[8].textContent);
 
-if((xRes + Number(xPractSum.toFixed(2))) > 0){
-  if(Math.abs(minX) > 0 ){
-  minLengths.parentElement.children[7].innerHTML = (-0.01 + minX).toFixed(2);
-  }else{
-  maxLengths.parentElement.children[7].innerHTML = (-0.01 + Number(valueX.textContent)).toFixed(2);
-}
-}
-if((xRes + Number(xPractSum.toFixed(2))) < 0){
-  if(Math.abs(minX) > 0 ){
-    minLengths.parentElement.children[7].innerHTML = (+0.01 + minX).toFixed(2);
-    }else{
-    maxLengths.parentElement.children[7].innerHTML = (+0.01 + Number(valueX.textContent)).toFixed(2);
+  if ((xRes + Number(xPractSum.toFixed(2))) > 0) {
+    if (Math.abs(minX) > 0) {
+      minLengths.parentElement.children[7].innerHTML = (-0.01 + minX).toFixed(2);
+    } else {
+      maxLengths.parentElement.children[7].innerHTML = (-0.01 + Number(valueX.textContent)).toFixed(2);
+    }
   }
-}
-if((yRes + Number(yPractSum.toFixed(2))) > 0){
-  if(Math.abs(minY) > 0 ){
-    minLengths.parentElement.children[8].innerHTML = (-0.01 + minY).toFixed(2);
-    }else{
-    maxLengths.parentElement.children[8].innerHTML = (-0.01 + Number(valueY.textContent)).toFixed(2);
+  if ((xRes + Number(xPractSum.toFixed(2))) < 0) {
+    if (Math.abs(minX) > 0) {
+      minLengths.parentElement.children[7].innerHTML = (+0.01 + minX).toFixed(2);
+    } else {
+      maxLengths.parentElement.children[7].innerHTML = (+0.01 + Number(valueX.textContent)).toFixed(2);
+    }
   }
-}
-if((yRes + Number(yPractSum.toFixed(2))) < 0){
-  if(Math.abs(minY) > 0 ){
-    minLengths.parentElement.children[8].innerHTML = (+0.01 + minY).toFixed(2);
-    }else{
-    maxLengths.parentElement.children[8].innerHTML = (+0.01 + Number(valueY.textContent)).toFixed(2);
+  if ((yRes + Number(yPractSum.toFixed(2))) > 0) {
+    if (Math.abs(minY) > 0) {
+      minLengths.parentElement.children[8].innerHTML = (-0.01 + minY).toFixed(2);
+    } else {
+      maxLengths.parentElement.children[8].innerHTML = (-0.01 + Number(valueY.textContent)).toFixed(2);
+    }
   }
-}
+  if ((yRes + Number(yPractSum.toFixed(2))) < 0) {
+    if (Math.abs(minY) > 0) {
+      minLengths.parentElement.children[8].innerHTML = (+0.01 + minY).toFixed(2);
+    } else {
+      maxLengths.parentElement.children[8].innerHTML = (+0.01 + Number(valueY.textContent)).toFixed(2);
+    }
+  }
 
-lines.forEach(elem =>{
-  elem.children[9].innerHTML = (Number(elem.children[5].textContent) + Number(elem.children[7].textContent)).toFixed(2);
-  elem.children[10].innerHTML = (Number(elem.children[6].textContent) + Number(elem.children[8].textContent)).toFixed(2);
-})
-let xPoints = document.querySelectorAll('.xClass');
-let yPoints = document.querySelectorAll('.yClass');
-calcPoints(xPoints, 9);
-calcPoints(yPoints, 10);
+  lines.forEach(elem => {
+    elem.children[9].innerHTML = (Number(elem.children[5].textContent) + Number(elem.children[7].textContent)).toFixed(2);
+    elem.children[10].innerHTML = (Number(elem.children[6].textContent) + Number(elem.children[8].textContent)).toFixed(2);
+  })
+  let xPoints = document.querySelectorAll('.xClass');
+  let yPoints = document.querySelectorAll('.yClass');
+  calcPoints(xPoints, 9);
+  calcPoints(yPoints, 10);
 }
 
 function calcPoints(el, index) {
   let res;
-
   el.forEach(elem => {
     let elemIndex = Array.prototype.slice.call(el).indexOf(elem);
-    let deltPoint = Number(elem.parentElement.nextElementSibling.children[index].textContent)
+    let deltPoint = Number(elem.parentElement.nextElementSibling.children[index].textContent);
     res = (Number(elem.textContent) + deltPoint).toFixed(2)
     if (el[elemIndex + 1]) {
       el[elemIndex + 1].innerHTML = res;

@@ -11,144 +11,154 @@
 <body>
   <div class="mainContent">
     <form id="settingsBlock">
-      <label for="name">Назва </label><input name="name" id="name" required><br>
-
-      <p> <label for="coordSystem">Система координат </label>
-        <select name="coordSystem" id="coordSystem" size="1">
-          <option value="1" selected="selected">УСК-2000 / XYZ</option>
-          <option value="2">УСК-2000 / BLH</option>
-          <option value="3">УСК-2000 GK6</option>
-          <option value="4">УСК-2000 UA_TM</option>
-
-          <option value="5">Місцева система координат м. Київ – УСК-2000</option>
-          <option value="6">Місцева система координат м. Севастополь – УСК-2000</option>
-          <option value="7">Місцева система координат АР Крим – УСК-2000</option>
-          <option value="8">Місцева система координат Вінницької області – УСК-2000</option>
-          <option value="9">Місцева система координат Волинської області – УСК-2000 </option>
-          <option value="10">Місцева система координат Дніпропетровської області – УСК-2000 </option>
-          <option value="11">Місцева система координат Донецької області – УСК-2000 </option>
-          <option value="12">Місцева система координат Житомирської області – УСК-2000 </option>
-
-          <option value="13">Місцева система координат Закарпатської області – УСК-2000 </option>
-          <option value="14">Місцева система координат Запорізької області – УСК-2000</option>
-          <option value="15">Місцева система координат Івано-Франківської області – УСК-2000 </option>
-          <option value="16">Місцева система координат Київської області – УСК-2000 </option>
-
-
-          <option value="17">Місцева система координат Кіровоградської області – УСК-2000 </option>
-          <option value="18">Місцева система координат Луганської області – УСК-2000 </option>
-          <option value="19">Місцева система координат Львівської області – УСК-2000 </option>
-          <option value="20">Місцева система координат Миколаївської області – УСК-2000 </option>
-          <option value="21">Місцева система координат Одеської області – УСК-2000 </option>
-          <option value="22">Місцева система координат Полтавської області – УСК-2000 </option>
-
-          <option value="23">Місцева система координат Рівненської області – УСК-2000 </option>
-          <option value="24">Місцева система координат Сумської області – УСК-2000</option>
-          <option value="25">Місцева система координат Тернопільської області – УСК-2000 </option>
-          <option value="26">Місцева система координат Харківської області – УСК-2000 </option>
-
-          <option value="27">Місцева система координат Херсонської області – УСК-2000</option>
-          <option value="28">Місцева система координат Хмельницької області – УСК-2000</option>
-          <option value="29">Місцева система координат Черкаської області – УСК-2000 </option>
-          <option value="30"> Місцева система координат Чернівецької області – УСК-2000 </option>
-          <option value="31"> Місцева система координат Чернігівської області – УСК-2000 </option>
-
-
-        </select></p>
-
-      <p>
-        <label for="traverseType">Тип ходу:</label>
-        <select id="traverseType" name="traverseType" size="1">
-          <option value="1" selected="selected">замкнутий</option>
-          <option value="2">розімкнутий</option>
-          <option value="3">з вузловою точкою</option>
-          <option value="4">з координатною привязкою</option>
-        </select>
-      </p>
-
-      <p>
-        <label for="classAccuracy">Клас точності:</label>
-        <select id="classAccuracy" name="classAccuracy" size="1">
-          <option id="teoStep" value="1" selected="selected">теодолітний хід</option>
-          <option value="2">полігонометрія 1-го розряду</option>
-          <option value="3">полігонометрія 2-го розряду</option>
-          <option value="4">полігонометрія 4-го класу</option>
-        </select>
-      </p>
-
-      <div id="builtUpBlock" style="display: block;">
-        <p><label for="builtUp">на місцевості</label>
-          <select name="builtUp" id="builtUp">
-            <option value="1" selected="selected">забудованій</option>
-            <option value="2">незабудованій</option>
-          </select>
-        </p>
-
-        <p> <label for="scale">у масштабі :</label>
-          <select name="scale" id="scale">
-            <option value="500" selected="selected">1:500</option>
-            <option value="1000">1:1000</option>
-            <option value="2000">1:2000</option>
-            <option value="5000">1:5000</option>
-          </select>
-        </p>
-      </div>
-
-      <p>Розмірність кутів:
-        <input type="radio" name="radioButton" id="radioDegr" value="1" checked><label for="radioDegr">в
-          градусах</label>
-        <input type="radio" name="radioButton" id="radioMin" value="2"><label for="radioMin">в градусах та
-          мінутах</label>
-        <input type="radio" name="radioButton" id="radioSec" value="3"><label for="radioSec">в градусах, мінутах та
-          секундах</label>
-      </p>
-
-      <p><label for="typeOfLines">Міри ліній:</label>
-        <select name="typeOfLines" id="typeOfLines">
-          <option value="1" id="measureDistance" selected="selected">виміряна лінія</option>
-          <option value="2">приведена лінія</option>
-        </select>
-      </p>
-
-      <p>
-        <label for="direction">Напрямок руху: </label>
-        <select name="direction" id="direction">
-          <option value="1" selected="selected">праві кути</option>
-          <option value="2">ліві кути</option>
-        </select>
-      </p>
-      <div id="coordinates">
-        <div id="firstCoordinates">
-          <div id="firstPointCoordinates">
-            <p>Введіть координати першої точки</p>
-            <p><label for="pointX1">X1:</label> <input type="number" name="pointX1" id="pointX1" min="0" step="0.001"
-                required></p>
-            <p><label for="pointY1">Y1:</label> <input type="number" name="pointY1" id="pointY1" min="0" step="0.001"
-                required></p>
-          </div>
-
+      <div id="settingsCoordinates">
+        <div id="settings">
           <div>
-            <p>та
-              <div id="firstCornPointChoose">
-                <input type="radio" name="tasks" id="corner" checked><label for="corner">дирекційний кут</label>
-                <span>або</span>
-                <input type="radio" name="tasks" id="twoPoints"><label for="twoPoints">координати наступної
-                  точки</label>
-              </div>
+            <label for="name">Назва </label><input name="name" id="name" required><br>
+          </div>
+          <p> <label for="coordSystem">Система координат </label>
+            <select name="coordSystem" id="coordSystem" size="1">
+              <option value="1" selected="selected">УСК-2000 / XYZ</option>
+              <option value="2">УСК-2000 / BLH</option>
+              <option value="3">УСК-2000 GK6</option>
+              <option value="4">УСК-2000 UA_TM</option>
+
+              <option value="5">Місцева система координат м. Київ – УСК-2000</option>
+              <option value="6">Місцева система координат м. Севастополь – УСК-2000</option>
+              <option value="7">Місцева система координат АР Крим – УСК-2000</option>
+              <option value="8">Місцева система координат Вінницької області – УСК-2000</option>
+              <option value="9">Місцева система координат Волинської області – УСК-2000 </option>
+              <option value="10">Місцева система координат Дніпропетровської області – УСК-2000 </option>
+              <option value="11">Місцева система координат Донецької області – УСК-2000 </option>
+              <option value="12">Місцева система координат Житомирської області – УСК-2000 </option>
+
+              <option value="13">Місцева система координат Закарпатської області – УСК-2000 </option>
+              <option value="14">Місцева система координат Запорізької області – УСК-2000</option>
+              <option value="15">Місцева система координат Івано-Франківської області – УСК-2000 </option>
+              <option value="16">Місцева система координат Київської області – УСК-2000 </option>
+
+
+              <option value="17">Місцева система координат Кіровоградської області – УСК-2000 </option>
+              <option value="18">Місцева система координат Луганської області – УСК-2000 </option>
+              <option value="19">Місцева система координат Львівської області – УСК-2000 </option>
+              <option value="20">Місцева система координат Миколаївської області – УСК-2000 </option>
+              <option value="21">Місцева система координат Одеської області – УСК-2000 </option>
+              <option value="22">Місцева система координат Полтавської області – УСК-2000 </option>
+
+              <option value="23">Місцева система координат Рівненської області – УСК-2000 </option>
+              <option value="24">Місцева система координат Сумської області – УСК-2000</option>
+              <option value="25">Місцева система координат Тернопільської області – УСК-2000 </option>
+              <option value="26">Місцева система координат Харківської області – УСК-2000 </option>
+
+              <option value="27">Місцева система координат Херсонської області – УСК-2000</option>
+              <option value="28">Місцева система координат Хмельницької області – УСК-2000</option>
+              <option value="29">Місцева система координат Черкаської області – УСК-2000 </option>
+              <option value="30"> Місцева система координат Чернівецької області – УСК-2000 </option>
+              <option value="31"> Місцева система координат Чернігівської області – УСК-2000 </option>
+
+
+            </select></p>
+
+          <p>
+            <label for="traverseType">Тип ходу:</label>
+            <select id="traverseType" name="traverseType" size="1">
+              <option value="1">замкнутий</option>
+              <option value="2" selected="selected">розімкнутий</option>
+              <option value="3">з вузловою точкою</option>
+              <option value="4">з координатною привязкою</option>
+            </select>
+          </p>
+
+          <p>
+            <label for="classAccuracy">Клас точності:</label>
+            <select id="classAccuracy" name="classAccuracy" size="1">
+              <option id="teoStep" value="1" selected="selected">теодолітний хід</option>
+              <option value="2">полігонометрія 1-го розряду</option>
+              <option value="3">полігонометрія 2-го розряду</option>
+              <option value="4">полігонометрія 4-го класу</option>
+            </select>
+          </p>
+
+          <div id="builtUpBlock" style="display: block;">
+            <p><label for="builtUp">на місцевості</label>
+              <select name="builtUp" id="builtUp">
+                <option value="1" selected="selected">забудованій</option>
+                <option value="2">незабудованій</option>
+              </select>
+            </p>
+
+            <p> <label for="scale">у масштабі :</label>
+              <select name="scale" id="scale">
+                <option value="500" selected="selected">1:500</option>
+                <option value="1000">1:1000</option>
+                <option value="2000">1:2000</option>
+                <option value="5000">1:5000</option>
+              </select>
             </p>
           </div>
 
+          <p class='degrChouse'><label>Розмірність кутів:</label>
+            <div>
+              <input class="degrBut" type="radio" name="radioButton" id="radioDegr" value="1" checked>
+              <label class="degrButLab" for="radioDegr">в градусах</label>
+            </div>
+            <div>
+              <input class="degrBut" type="radio" name="radioButton" id="radioMin" value="2">
+              <label class="degrButLab" for="radioMin">в градусах та мінутах</label>
+            </div>
+            <div>
+              <input class="degrBut" type="radio" name="radioButton" id="radioSec" value="3">
+              <label class="degrButLab" for="radioSec">в градусах, мінутах та секундах</label>
+            </div>
+          </p>
 
-          <div id="secondPointCoordinates" style="display:none;" id="point2">
-            <p><label for="pointX2">X2:</label> <input type="number" min="0" name="pointX2" id="pointX2" step="0.001">
-            </p>
-            <p><label for="pointY2">Y2: <input type="number" name="pointY2" id="pointY2" min="0" step="0.001"></p>
-          </div>
+          <p><label for="typeOfLines">Міри ліній:</label>
+            <select name="typeOfLines" id="typeOfLines">
+              <option value="1" id="measureDistance" selected="selected">виміряна лінія</option>
+              <option value="2">приведена лінія</option>
+            </select>
+          </p>
+
+          <p>
+            <label for="direction">Напрямок руху: </label>
+            <select name="direction" id="direction">
+              <option value="1" selected="selected">праві кути</option>
+              <option value="2">ліві кути</option>
+            </select>
+          </p>
+        </div>
+        <div id="coordinates">
+          <div id="firstCoordinates">
+            <div id="firstPointCoordinates">
+              <p>Введіть координати першої точки</p>
+              <p><label for="pointX1">X1:</label> <input type="number" name="pointX1" id="pointX1" min="0" step="0.001"
+                  required></p>
+              <p><label for="pointY1">Y1:</label> <input type="number" name="pointY1" id="pointY1" min="0" step="0.001"
+                  required></p>
+            </div>
+
+            <div id="selectPointOrCorner">
+              <p>та
+                <div id="firstCornPointChoose">
+                  <input type="radio" name="tasks" id="corner" checked><label for="corner">дирекційний кут</label>
+                  <span>або</span>
+                  <input type="radio" name="tasks" id="twoPoints"><label for="twoPoints">координати наступної
+                    точки</label>
+                </div>
+              </p>
+            </div>
+
+
+            <div id="secondPointCoordinates" style="display:none;" id="point2">
+              <p><label for="pointX2">X2:</label> <input type="number" min="0" name="pointX2" id="pointX2" step="0.001">
+              </p>
+              <p><label for="pointY2">Y2: <input type="number" name="pointY2" id="pointY2" min="0" step="0.001"></p>
+            </div>
 
 
 
-          <div id="cornerBlock">
-            <p>дирекц. угол:<br>
+            <div id="cornerBlock">
+              <p id='labForCorn' style="display: none;">Дирекційний кут</p>
               <input type="number" class="cornerDegr" name="cornerDegrDirect" id="cornerDegrDirect" min="0" max="360"
                 required> <label for="cornerDegrDirect">&deg;</label>
               <input type="number" class="cornerMin field" name="cornerMinDirect" id="cornerMinDirect" step="0.001"
@@ -157,40 +167,45 @@
               <input type="number" class="cornerSec field" name="cornerSecDirect" id="cornerSecDirect" step="0.001"
                 style="display: none;" min="0" max="60">
               <label for="cornerSecDirect" class="cornerSec" style="display: none;">"</label>
-            </p>
-          </div>
-        </div>
+              </p>
+            </div>
 
-        <div id="lastCoordinates">
-          <div id="penultPointCoordinates">
-            <p>Введіть координати останньої точки </p>
-            <p><label for="pointPenultX1">X1:</label> <input type="number" name="pointPenultX1" id="pointPenultX1"
-                min="0" step="0.001" required></p>
-            <p><label for="pointPenultY1">Y1:</label> <input type="number" name="pointPenultY1" id="pointPenultY1"
-                min="0" step="0.001" required></p>
+
+            <div id="firstLength" style="display: none;">
+              <p><label for="firstLengthVal">Відстань до т1:</label></p> 
+              <input type="number" min="0" step="0.01" name='firstLengthVal' id="firstLengthVal" required> м 
+            </div>
           </div>
 
-          <div>
-            <p>та
-              <div id="lastCornPointChoose">
-                <input type="radio" name="lastTasks" id="lastCorner" checked><label for="lastCorner">дирекційний
-                  кут</label>
-                <span>або</span>
-                   <input type="radio" name="lastTasks" id="lastTwoPoints"><label for="lastTwoPoints">координати
-                  наступної точки</label>
-              </div>
-            </p>
-          </div>
+          <div id="lastCoordinates">
+            <div id="penultPointCoordinates">
+              <p>Введіть координати останньої точки </p>
+              <p><label for="pointPenultX1">X1:</label> <input type="number" name="pointPenultX1" id="pointPenultX1"
+                  min="0" step="0.001" required></p>
+              <p><label for="pointPenultY1">Y1:</label> <input type="number" name="pointPenultY1" id="pointPenultY1"
+                  min="0" step="0.001" required></p>
+            </div>
 
-          <div id="lastPointCoordinates" style="display:none;" id="lastPoint">
-            <p><label for="lastPointX2">X2:</label> <input type="number" min="0" name="lastPointX2" id="lastPointX2"
-                step="0.001"></p>
-            <p><label for="lastPointY2">Y2: <input type="number" name="lastPointY2" id="lastPointY2" min="0"
+            <div>
+              <p>та
+                <div id="lastCornPointChoose">
+                  <input type="radio" name="lastTasks" id="lastCorner" checked><label for="lastCorner">дирекційний
+                    кут</label>
+                  <span>або</span>
+                  <input type="radio" name="lastTasks" id="lastTwoPoints"><label for="lastTwoPoints">координати
+                    наступної точки</label>
+                </div>
+              </p>
+            </div>
+
+            <div id="lastPointCoordinates" style="display:none;" id="lastPoint">
+              <p><label for="lastPointX2">X2:</label> <input type="number" min="0" name="lastPointX2" id="lastPointX2"
                   step="0.001"></p>
-          </div>
+              <p><label for="lastPointY2">Y2: <input type="number" name="lastPointY2" id="lastPointY2" min="0"
+                    step="0.001"></p>
+            </div>
 
-          <div id="lastCornerBlock">
-            <p>дирекц. угол:<br>
+            <div id="lastCornerBlock">
               <input type="number" class="cornerDegr" name="lastCornerDegrDirect" id="lastCornerDegrDirect" min="0"
                 max="360" required>
               <label for="lastCornerDegrDirect">&deg;</label>
@@ -200,139 +215,138 @@
               <input type="number" class="cornerSec field" name="lastCornerSecDirect" id="lastCornerSecDirect"
                 step="0.001" style="display: none;" min="0" max="60">
               <label for="lastCornerSecDirect" class="cornerSec" style="display: none;">"</label>
-            </p>
+              </p>
+            </div>
           </div>
+
+        </div>
+      </div>
+      <div> <button type="submit" id="settingsButton">Додати координати</button></div>
+    </form>
+
+    <div class="secondScreen">
+      <form id="sideOfTraverse">
+
+        <p>Введіть наступну сторону ходу та кут</p>
+        <p><label>Відстань:</label> <input type="number" min="0" step="0.01" id="length" required> м </p>
+
+        <div>
+          <p>Кут &beta; :
+            <input type="number" class="cornerDegr" id="betaCornerDegr" min="0" max="360" required> <label
+              for="betaCornerDegr">&deg;</label>
+            <input type="number" class="cornerMin field" id="betaCornerMin" step="0.001" style="display: none;" min="0"
+              max="60">
+            <label for="betaCornerMin" class="cornerMin" style="display: none;">'</label>
+            <input type="number" class="cornerSec field" id="betaCornerSec" step="0.001" style="display: none;" min="0"
+              max="60">
+            <label for="betaCornerSec" class="cornerSec" style="display: none;">"</label>
+          </p>
+
         </div>
 
-      </div>
-      <p><button type="submit" id="settingsButton">Додати координати</button></p>
-    </form>
-
-
-    <form id="sideOfTraverse">
-
-      <p>Введіть наступну сторону ходу та кут</p>
-      <p><label>Відстань:</label> <input type="number" min="0" step="0.001" id="length" required> м </p>
-
-      <div>
-        <p>Кут &beta; :
-          <input type="number" class="cornerDegr" id="betaCornerDegr" min="0" max="360" required> <label
-            for="betaCornerDegr">&deg;</label>
-          <input type="number" class="cornerMin field" id="betaCornerMin" step="0.001" style="display: none;" min="0"
+        <div id="cornerGamma">Кут нахилу &gamma; :
+          <input type="number" required class="cornerDegr" id="gammaCornerDegr" min="-90" max="90"> <label
+            for="gammaCornerDegr">&deg;</label>
+          <input type="number" class="cornerMin field" id="gammaCornerMin" step="0.001" style="display: none;" min="0"
             max="60">
-          <label for="betaCornerMin" class="cornerMin" style="display: none;">'</label>
-          <input type="number" class="cornerSec field" id="betaCornerSec" step="0.001" style="display: none;" min="0"
+          <label for="gammaCornerMin" class="cornerMin" style="display: none;">'</label>
+          <input type="number" class="cornerSec field" id="gammaCornerSec" step="0.001" style="display: none;" min="0"
             max="60">
-          <label for="betaCornerSec" class="cornerSec" style="display: none;">"</label>
+          <label for="gammaCornerSec" class="cornerSec" style="display: none;">"</label>
+        </div>
+
+        <p>
+          <button type="submit" disabled id="sideOfTraverseButton">Додати</button>
+          <button type="submit" disabled id="lastBetaCorner">Додати останній кут &beta;</button>
         </p>
 
+
+      </form>
+
+      <div class="tableBlock">
+        <table id="table">
+          <tr id="titleLine">
+            <th>№</th>
+            <th>Угол &beta; изм.</th>
+            <th>f&beta;</th>
+            <th>Угол &beta; иcпр.</th>
+            <th>Дир угол &alpha;</th>
+            <th>d</th>
+            <th>L</th>
+            <th>&plusmn;&gamma;</th>
+            <th>&Delta; X</th>
+            <th>&Delta; Y</th>
+            <th>&plusmn;&Delta;X</th>
+            <th>&plusmn;&Delta;Y</th>
+            <th>&Delta;X иcпр.</th>
+            <th>&Delta;Y иcпр.</th>
+            <th>X</th>
+            <th>Y</th>
+          </tr>
+          <tr id="firstLine" class="firstValues openTrav">
+            <td> Бт1</td>
+            <td colspan='13'></td>
+            <td id="firstPointXCoordinate"></td>
+            <td id="firstPointYCoordinate"></td>
+          </tr>
+          <tr class="openTrav">
+            <td colspan='4'></td>
+            <td class="firstValues alphaCorner" id="firstAlpha"></td>
+            <td colspan="11"></td>
+          </tr>
+          <tr class="addBeta betaLine openTrav">
+            <td class="firstValues">Бт2</td>
+            <td></td>
+            <td class="fBeta"></td>
+            <td class="correctedCorner"></td>
+            <td colspan="10"></td>
+            <td class="firstValues xClass" id="secondPointXCoordinate"></td>
+            <td class="firstValues yClass" id="secondPointYCoordinate"></td>
+          </tr>
+
+          <tr id="addLastBeta" class="betaLine">
+            <td class="firstValues">Бт3</td>
+            <td></td>
+            <td class="fBeta"></td>
+            <td class="correctedCorner"></td>
+            <td colspan="10"></td>
+            <td class="firstValues" id="penultPointXCoordinate"></td>
+            <td class="firstValues" id="penultPointYCoordinate"></td>
+            </td>
+          <tr>
+            <td colspan='4'></td>
+            <td class="firstValues" id="lastAlpha"></td>
+            <td colspan='11'></td>
+          </tr>
+          <tr id="lastLine" class="firstValues">
+            <td>Бт4</td>
+            <td colspan='13'></td>
+            <td id="lastPointXCoordinate"></td>
+            <td id="lastPointYCoordinate"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td id="calcCornSum"></td>
+            <td id="fBeta"></td>
+            <td id="teorCornSum"></td>
+            <td></td>
+            <td id="perimeter"></td>
+            <td></td>
+            <td></td>
+            <td id="sumX"></td>
+            <td id="sumY"></td>
+            <td id="sumMinTeorX"></td>
+            <td id="sumMinTeorY"></td>
+            <td id="teorSumX"></td>
+            <td id="teorSumY"></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
       </div>
 
-      <div id="cornerGamma">Кут нахилу &gamma; :
-        <input type="number" required class="cornerDegr" id="gammaCornerDegr" min="-90" max="90"> <label
-          for="gammaCornerDegr">&deg;</label>
-        <input type="number" class="cornerMin field" id="gammaCornerMin" step="0.001" style="display: none;" min="0"
-          max="60">
-        <label for="gammaCornerMin" class="cornerMin" style="display: none;">'</label>
-        <input type="number" class="cornerSec field" id="gammaCornerSec" step="0.001" style="display: none;" min="0"
-          max="60">
-        <label for="gammaCornerSec" class="cornerSec" style="display: none;">"</label>
-      </div>
-
-      <p>
-        <button type="submit" disabled id="sideOfTraverseButton">Додати</button>
-        <button type="submit" disabled id="lastBetaCorner">Додати останній кут &beta;</button>
-      </p>
-
-
-    </form>
-  </div>
-  <hr>
-
-  <div class="tableBlock">
-    <table id="table">
-      <tr>
-        <th>№</th>
-        <th>Угол &beta; изм.</th>
-        <th>f&beta;</th>
-        <th>Угол &beta; иcпр.</th>
-        <th>Дир угол &alpha;</th>
-        <th>d</th>
-        <th>L</th>
-        <th>&plusmn;&gamma;</th>
-        <th>&Delta; X</th>
-        <th>&Delta; Y</th>
-        <th>&plusmn;&Delta;X</th>
-        <th>&plusmn;&Delta;Y</th>
-        <th>&Delta;X иcпр.</th>
-        <th>&Delta;Y иcпр.</th>
-        <th>X</th>
-        <th>Y</th>
-      </tr>
-      <tr id="firstLine" class="firstValues">
-        <td> Бт1</td>
-        <td colspan='13'></td>
-        <td id="firstPointXCoordinate"></td>
-        <td id="firstPointYCoordinate"></td>
-      </tr>
-      <tr>
-        <td colspan='4'></td>
-        <td class="firstValues alphaCorner" id="firstAlpha"></td>
-        <td colspan="11"></td>
-      </tr>
-      <tr class="addBeta betaLine">
-        <td class="firstValues">Бт2</td>
-        <td></td>
-        <td class="fBeta"></td>
-        <td class="correctedCorner"></td>
-        <td colspan="10"></td>
-        <td class="firstValues xClass" id="secondPointXCoordinate"></td>
-        <td class="firstValues yClass" id="secondPointYCoordinate"></td>
-      </tr>
-
-      <tr id="addLastBeta" class="betaLine">
-        <td class="firstValues">Бт3</td>
-        <td></td>
-        <td class="fBeta"></td>
-        <td class="correctedCorner"></td>
-        <td colspan="10"></td>
-        <td class="firstValues" id="penultPointXCoordinate"></td>
-        <td class="firstValues" id="penultPointYCoordinate"></td>
-        </td>
-      <tr>
-        <td colspan='4'></td>
-        <td class="firstValues" id="lastAlpha"></td>
-        <td colspan='11'></td>
-      </tr>
-      <tr id="lastLine" class="firstValues">
-        <td>Бт4</td>
-        <td colspan='13'></td>
-        <td id="lastPointXCoordinate"></td>
-        <td id="lastPointYCoordinate"></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td id="calcCornSum"></td>
-        <td id="fBeta"></td>
-        <td id="teorCornSum"></td>
-        <td></td>
-        <td id="perimeter"></td>
-        <td></td>
-        <td></td>
-        <td id="sumX"></td>
-        <td id="sumY"></td>
-        <td id="sumMinTeorX"></td>
-        <td id="sumMinTeorY"></td>
-        <td id="teorSumX"></td>
-        <td id="teorSumY"></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
-  </div>
-
-
-  <script src="main.js"></script>
+    </div>
+    <script src="main.js"></script>
 
 </body>
 

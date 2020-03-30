@@ -1,22 +1,65 @@
 .invalid{
   border: 1px solid red;
 }
-
-.mainContent, #coordinates{
+ #settingsCoordinates{
+   border:1px solid black;
+   padding: 10px;
+   display:flex;
+}
+ #coordinates{
   display: flex;
+  margin-top: -15px;
+  margin-left: 100px ;
 }
 
 table, th ,td{
   border: 1px solid black;
   border-collapse: collapse;
 }
+.tableBlock, table{
+  width: 100%;
+}
 th ,td{
   padding: 5px 10px;
 }
-#firstCoordinates, #lastCoordinates{
-  min-width:530px;
+ #lastCoordinates{
+  margin-left:30px;
 }
 
 .firstValues{
   color:red;
+}
+
+#settings label{
+  display: inline-block; 
+  width: 140px;
+}
+
+#settings input, #settings select{
+  width:210px
+} 
+.degrChouse, #settingsBlock{
+  display: flex;
+  flex-direction: column;
+}
+#settings .degrBut{
+  width: 10px;
+}
+#settings .degrButLab{
+  width:300px
+}
+#settingsButton{
+  float:right;
+  margin: 15px 0; 
+}
+
+.secondScreen{
+  display: flex;
+  flex-direction: row-reverse;
+justify-content: space-between;
+}
+
+.secondScreen form {
+  margin: -20px 0 0 20px;
+  min-width:380px;
 }
