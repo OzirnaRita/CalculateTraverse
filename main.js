@@ -28,7 +28,7 @@ let secFields = document.querySelectorAll('.cornerSec');
 let table = document.getElementById('table');
 let rows = table.getElementsByTagName('tr');
 
-let classValue = document.getElementById('classAccuracy').value;
+
 let alpha = document.getElementById('firstAlpha');
 let lastAlpha = document.getElementById('lastAlpha');
 let fBetaSum = document.getElementById('fBeta');
@@ -576,6 +576,7 @@ secFields.forEach(element => {
 function lengthLimitation() {
   let builtValue = document.getElementById('builtUp').value;
   let length = document.getElementById('length');
+  let classValue = document.getElementById('classAccuracy').value;
   if (classValue == '2') {
     length.setAttribute('min', 120);
     length.setAttribute('max', 800);
@@ -667,9 +668,9 @@ function calcTeorCorners() {
     sumTeorIn = 648000 * (countBetas - 2);
     sumTeorOut = 648000 * (countBetas + 2);
 
-    if ((sumTeorIn - 7200) < res && res < (sumTeorIn + 7200)) {
+    if ((sumTeorIn - 3600) < res && res < (sumTeorIn + 3600)) {
       sum = fromSecToSecMinDeg(sumTeorIn);
-    } else if ((sumTeorOut - 7200) < res && res < (sumTeorOut + 7200)) {
+    } else if ((sumTeorOut - 3600) < res && res < (sumTeorOut + 3600)) {
       sum = fromSecToSecMinDeg(sumTeorOut);
     } else {
       alert('Невірно введені кути, розрахунок неможливий');
@@ -711,6 +712,8 @@ function calcTeorCorners() {
 
 function fBetaValid(fBeta, countBetas) {
   fBeta = fromSecMinDegToSec(fBeta.deg, fBeta.min, fBeta.sec);
+  let classValue = document.getElementById('classAccuracy').value;
+  let controlBeta = document.getElementById('controlBeta');
   let control, res;
   if (classValue == '1') {
     control = (1 * Math.sqrt(countBetas)) * 60;
@@ -721,6 +724,8 @@ function fBetaValid(fBeta, countBetas) {
   } else {
     control = 5 * Math.sqrt(countBetas);
   }
+  let con = fromSecToSecMinDeg(control);
+ writeDegr(con.deg, con.min, con.sec, controlBeta)
   if (fBeta > control) {
     alert("Кутова нев`язка більша за допустиму, розрахунок зупинено");
     res = false;
@@ -892,8 +897,10 @@ function countDeltX() {
   let yRes = Number((sumY - teorY).toFixed(2));
   document.getElementById('sumMinTeorX').innerHTML = xRes;
   document.getElementById('sumMinTeorY').innerHTML = yRes;
+  
+  document.getElementById('fAbs').innerHTML = fAbs().toFixed(2);
+  
 
-  let lengths = document.querySelectorAll('.measureLength').length;
   let per = Number(document.getElementById('perimeter').textContent);
   lines.forEach(elem => {
     elem.children[7].innerHTML = -(((xRes / per) * Number(elem.children[2].textContent)).toFixed(2));
@@ -951,10 +958,45 @@ function countDeltX() {
     elem.children[9].innerHTML = (Number(elem.children[5].textContent) + Number(elem.children[7].textContent)).toFixed(2);
     elem.children[10].innerHTML = (Number(elem.children[6].textContent) + Number(elem.children[8].textContent)).toFixed(2);
   })
+
   let xPoints = document.querySelectorAll('.xClass');
   let yPoints = document.querySelectorAll('.yClass');
   calcPoints(xPoints, 9);
   calcPoints(yPoints, 10);
+  fRel();
+}
+
+function fAbs(){
+  let x = Number(document.getElementById('sumMinTeorX').textContent);
+  let y = Number(document.getElementById('sumMinTeorY').textContent);
+  let res = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+  return res;
+}
+
+function fRel(){
+  let p = Number(document.getElementById('perimeter').textContent);
+  let f = fAbs();
+  let res = p/f;
+  document.getElementById('fRel').innerHTML = '1' + ':' + Math.round(res);
+ 
+  let classValue = document.getElementById('classAccuracy').value;
+  if (classValue == '2') {
+    if((1/res) > (1/10000)){
+      alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
+    }
+  } else if (classValue == '3') {
+    if((1/res) > (1/5000)){
+      alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
+    }
+  } else if (classValue == '4') {
+    if((1/res) > (1/25000)){
+      alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
+    }
+  } else if (classValue == '1'){
+    if((1/res) > (1/2000)){
+      alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
+    }
+  }
 }
 
 function calcPoints(el, index) {
