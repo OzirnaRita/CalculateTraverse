@@ -228,8 +228,9 @@
       <form id="sideOfTraverse">
 
         <p>Введіть наступну сторону ходу та кут</p>
-        <p><label>Відстань:</label> <input type="number" min="0" step="0.01" id="length" required> м </p>
-
+        <p><label>Відстань:</label> <input type="number" min="0" step="0.01" id="length" required> м 
+        <span id="errorSpan" style="font-size: 10px; display:none; color: red;margin-bottom: -12px;"></span>
+      </p>
         <div>
           <p>Кут &beta; :
             <input type="number" class="cornerDegr" id="betaCornerDegr" min="0" max="360" required> <label

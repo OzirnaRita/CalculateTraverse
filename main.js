@@ -105,27 +105,27 @@ function selectCornerOrPoints() {
     pointY2.classList.remove("invalid");
     cornerDegrDirect.required = true;
   } else {
-    if(traverseType !== '1'){
-    cornerBlock.style.display = 'none';
-    secondPointCoordinates.style.display = 'block';
-    cornerDegrDirect.required = false;
-    pointX2.required = true;
-    pointY2.required = true;
-    cornerDegrDirect.classList.remove("invalid");
-    cornerDegrDirect.value = '';
-    if (cornerMinDirect.value) {
-      cornerMinDirect.value = ''
-    };
-    if (cornerSecDirect.value) {
-      cornerSecDirect.value = ''
-    };
-  }else{
-    cornerBlock.style.display = 'block';
-    secondPointCoordinates.style.display = 'none';
-    cornerDegrDirect.required = true;
-    pointX2.required = false;
-    pointY2.required = false;
-  }
+    if (traverseType !== '1') {
+      cornerBlock.style.display = 'none';
+      secondPointCoordinates.style.display = 'block';
+      cornerDegrDirect.required = false;
+      pointX2.required = true;
+      pointY2.required = true;
+      cornerDegrDirect.classList.remove("invalid");
+      cornerDegrDirect.value = '';
+      if (cornerMinDirect.value) {
+        cornerMinDirect.value = ''
+      };
+      if (cornerSecDirect.value) {
+        cornerSecDirect.value = ''
+      };
+    } else {
+      cornerBlock.style.display = 'block';
+      secondPointCoordinates.style.display = 'none';
+      cornerDegrDirect.required = true;
+      pointX2.required = false;
+      pointY2.required = false;
+    }
   }
 }
 
@@ -198,7 +198,6 @@ const formToJSON = elements => [].reduce.call(elements, (data, element) => {
 
 function addSettings() {
   validationFunc(fields);
-  lengthLimitation();
   if (form.querySelectorAll('.invalid').length == 0) {
     addToTable();
     document.getElementById('sideOfTraverseButton').removeAttribute("disabled");
@@ -227,64 +226,64 @@ function addToTable() {
   let length = form.firstLengthVal.value;
   let traverseType = document.getElementById('traverseType').value;
   let title = document.getElementById('titleLine');
-  if(traverseType !== '1'){
+  if (traverseType !== '1') {
 
-  if (document.getElementById("corner").checked) {
-    document.getElementById('firstLine').style.display = 'none';
+    if (document.getElementById("corner").checked) {
+      document.getElementById('firstLine').style.display = 'none';
+      document.getElementById('secondPointXCoordinate').innerHTML = X1;
+      document.getElementById('secondPointYCoordinate').innerHTML = Y1;
+
+      writeDegr(degr, min, sec, alpha)
+    } else {
+      document.getElementById('firstLine').style.display = '';
+      document.getElementById('firstPointXCoordinate').innerHTML = X1;
+      document.getElementById('firstPointYCoordinate').innerHTML = Y1;
+      document.getElementById('secondPointXCoordinate').innerHTML = X2;
+      document.getElementById('secondPointYCoordinate').innerHTML = Y2;
+
+      alpha.innerHTML = countDegr(X1, Y1, X2, Y2);
+    }
+
+    document.getElementById('penultPointXCoordinate').innerHTML = lastX1;
+    document.getElementById('penultPointYCoordinate').innerHTML = lastY1;
+
+    if (document.getElementById("lastCorner").checked) {
+      document.getElementById('lastLine').style.display = 'none';
+      writeDegr(lastDegr, lastMin, lastSec, lastAlpha)
+    } else {
+      document.getElementById('lastLine').style.display = '';
+      document.getElementById('lastPointXCoordinate').innerHTML = lastX2;
+      document.getElementById('lastPointYCoordinate').innerHTML = lastY2;
+
+      lastAlpha.innerHTML = countDegr(lastX1, lastY1, lastX2, lastY2);
+    }
+  } else {
+    let openTravs = document.querySelectorAll('.openTrav');
+    openTravs.forEach(elem => {
+
+      if (elem.parentNode) {
+        elem.parentNode.removeChild(elem);
+      }
+    })
+    document.getElementById('lastLine').style.display = 'none';
+    title.insertAdjacentHTML('afterend', '<tr class="addBeta"><td class="firstValues">Бт2</td><td colspan="13"></td><td class="firstValues xClass" id="secondPointXCoordinate"></td><td class="firstValues yClass" id="secondPointYCoordinate"></td></tr>');
+
     document.getElementById('secondPointXCoordinate').innerHTML = X1;
     document.getElementById('secondPointYCoordinate').innerHTML = Y1;
-
-    writeDegr(degr, min, sec, alpha)
-  } else {
-    document.getElementById('firstLine').style.display = '';
-    document.getElementById('firstPointXCoordinate').innerHTML = X1;
-    document.getElementById('firstPointYCoordinate').innerHTML = Y1;
-    document.getElementById('secondPointXCoordinate').innerHTML = X2;
-    document.getElementById('secondPointYCoordinate').innerHTML = Y2;
-
-    alpha.innerHTML = countDegr(X1, Y1, X2, Y2);
+    let bet = document.querySelector('.addBeta');
+    bet.insertAdjacentHTML('afterend', '<tr class="afterBeta" ><td colspan="4"></td><td class="firstValues alphaCorner" id="firstAlpha"></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td class="fX"></td><td class="fY"></td><td></td><td></td><td colspan="2"></td></tr>');
+    let alpha = document.getElementById('firstAlpha');
+    let leng = document.querySelector('.measureLength');
+    leng.innerHTML = length;
+    writeDegr(degr, min, sec, alpha);
+    writeDegr(degr, min, sec, lastAlpha);
+    document.getElementById('penultPointXCoordinate').innerHTML = X1;
+    document.getElementById('penultPointYCoordinate').innerHTML = Y1;
+    let lastBetaName = document.getElementById('addLastBeta').cells[0];
+    lastBetaName.innerHTML = 'Бп2';
+    let afterBet = document.querySelector('.afterBeta');
+    afterBet.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td>т1</td><td></td><td class="fBeta"></td><td  class="correctedCorner"></td><td colspan="10"></td><td class="xClass"></td><td class="yClass"></td></tr>')
   }
-
-  document.getElementById('penultPointXCoordinate').innerHTML = lastX1;
-  document.getElementById('penultPointYCoordinate').innerHTML = lastY1;
-
-  if (document.getElementById("lastCorner").checked) {
-    document.getElementById('lastLine').style.display = 'none';
-    writeDegr(lastDegr, lastMin, lastSec, lastAlpha)
-  } else {
-    document.getElementById('lastLine').style.display = '';
-    document.getElementById('lastPointXCoordinate').innerHTML = lastX2;
-    document.getElementById('lastPointYCoordinate').innerHTML = lastY2;
-
-    lastAlpha.innerHTML = countDegr(lastX1, lastY1, lastX2, lastY2);
-  }
-}else{
-  let openTravs = document.querySelectorAll('.openTrav');
-  openTravs.forEach(elem =>{
-    
-   if (elem.parentNode) {
-  elem.parentNode.removeChild(elem);
-}
-  })
-  document.getElementById('lastLine').style.display = 'none';
-  title.insertAdjacentHTML('afterend', '<tr class="addBeta"><td class="firstValues">Бт2</td><td colspan="13"></td><td class="firstValues xClass" id="secondPointXCoordinate"></td><td class="firstValues yClass" id="secondPointYCoordinate"></td></tr>');
-  
-  document.getElementById('secondPointXCoordinate').innerHTML = X1;
-  document.getElementById('secondPointYCoordinate').innerHTML = Y1;
-  let bet = document.querySelector('.addBeta');
-  bet.insertAdjacentHTML('afterend', '<tr class="afterBeta" ><td colspan="4"></td><td class="firstValues alphaCorner" id="firstAlpha"></td><td class="measureLength"><td class="measureDistance"></td><td class="gammaCorner"></td><td ></td><td></td><td class="fX"></td><td class="fY"></td><td></td><td></td><td colspan="2"></td></tr>');
-  let alpha = document.getElementById('firstAlpha');
-  let leng = document.querySelector('.measureLength');
-  leng.innerHTML = length;
-  writeDegr(degr, min, sec, alpha);
-  writeDegr(degr, min, sec, lastAlpha);
-  document.getElementById('penultPointXCoordinate').innerHTML = X1;
-  document.getElementById('penultPointYCoordinate').innerHTML = Y1;
-  let lastBetaName = document.getElementById('addLastBeta').cells[0];
-  lastBetaName.innerHTML = 'Бп2';
-  let afterBet = document.querySelector('.afterBeta');
-  afterBet.insertAdjacentHTML('afterend', '<tr class="addBeta betaLine"><td>т1</td><td></td><td class="fBeta"></td><td  class="correctedCorner"></td><td colspan="10"></td><td class="xClass"></td><td class="yClass"></td></tr>')
-}
 }
 
 function writeDegr(deg, min, sec, value) {
@@ -334,7 +333,7 @@ function countDegr(x, y, x2, y2) {
 function validationFunc(inp) {
   inp.forEach(element => {
 
-    if (element.required == true) {
+    if (element.required == true && element.id !== 'length') {
       if (element.value.length == 0 || element.value < 0) {
         element.classList.add('invalid');
       }
@@ -413,6 +412,7 @@ function addLastCorner() {
 
 function add() {
   validationFunc(secondFormFields);
+  lengthLimitation();
   let degr = secondForm.betaCornerDegr.value;
   let min = secondForm.betaCornerMin.value;
   let sec = secondForm.betaCornerSec.value;
@@ -441,6 +441,7 @@ function add() {
     afterBeta();
     secondForm.reset();
     calcMeasureCorners();
+    calculateAmountOfSides();
   }
 };
 
@@ -573,37 +574,6 @@ secFields.forEach(element => {
   })
 })
 
-function lengthLimitation() {
-  let builtValue = document.getElementById('builtUp').value;
-  let length = document.getElementById('length');
-  let classValue = document.getElementById('classAccuracy').value;
-  if (classValue == '2') {
-    length.setAttribute('min', 120);
-    length.setAttribute('max', 800);
-  } else if (classValue == '3') {
-    length.setAttribute('min', 80);
-    length.setAttribute('max', 500);
-  } else if (classValue == '4') {
-    length.setAttribute('min', 250);
-    length.setAttribute('max', 3000);
-  } else {
-    if (builtValue == '1') {
-      length.setAttribute('min', 200);
-      length.setAttribute('max', 1000);
-    } else {
-      length.setAttribute('min', 400);
-      length.setAttribute('max', 1500);
-    }
-  }
-}
-
-function limitLength(x, y) {
-  if (x <= length.value <= y) {
-    length.classList.remove('invalid');
-  } else {
-    length.classList.add('invalid');
-  }
-}
 
 function calcMeasureCorners() {
   let sum = 0,
@@ -703,9 +673,9 @@ function calcTeorCorners() {
   writeDegr(fBeta.deg, fBeta.min, fBeta.sec, fBetaSum);
   fBetaSum.innerHTML = sign + fBetaSum.textContent;
 
-  
-  if (fBetaValid(fBeta, countBetas)){
-  shareFBeta(fBeta, countBetas, sign);
+
+  if (fBetaValid(fBeta, countBetas)) {
+    shareFBeta(fBeta, countBetas, sign);
   }
   //shareFBeta(fBeta, countBetas, sign);
 }
@@ -725,7 +695,7 @@ function fBetaValid(fBeta, countBetas) {
     control = 5 * Math.sqrt(countBetas);
   }
   let con = fromSecToSecMinDeg(control);
- writeDegr(con.deg, con.min, con.sec, controlBeta)
+  writeDegr(con.deg, con.min, con.sec, controlBeta)
   if (fBeta > control) {
     alert("Кутова нев`язка більша за допустиму, розрахунок зупинено");
     res = false;
@@ -846,17 +816,19 @@ function calcAlphaCorners() {
       res = res + 1296000;
     }
 
-    
-    if (corners[elemIndex + 1]) {res = fromSecToSecMinDeg(res);
+
+    if (corners[elemIndex + 1]) {
+      res = fromSecToSecMinDeg(res);
       writeDegr(res.deg, res.min, res.sec, corners[elemIndex + 1]);
     } else {
       alpha = transDegr(alpha.textContent);
-      if(res == fromSecMinDegToSec(alpha.deg, alpha.min, alpha.sec)){
+      if (res == fromSecMinDegToSec(alpha.deg, alpha.min, alpha.sec)) {
         console.log(true)
-      }else{
-      console.log(false);
+      } else {
+        console.log(false);
+      }
     }
-  }})
+  })
   calculatePerimetr();
 }
 
@@ -897,9 +869,9 @@ function countDeltX() {
   let yRes = Number((sumY - teorY).toFixed(2));
   document.getElementById('sumMinTeorX').innerHTML = xRes;
   document.getElementById('sumMinTeorY').innerHTML = yRes;
-  
+
   document.getElementById('fAbs').innerHTML = fAbs().toFixed(2);
-  
+
 
   let per = Number(document.getElementById('perimeter').textContent);
   lines.forEach(elem => {
@@ -966,34 +938,34 @@ function countDeltX() {
   fRel();
 }
 
-function fAbs(){
+function fAbs() {
   let x = Number(document.getElementById('sumMinTeorX').textContent);
   let y = Number(document.getElementById('sumMinTeorY').textContent);
   let res = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
   return res;
 }
 
-function fRel(){
+function fRel() {
   let p = Number(document.getElementById('perimeter').textContent);
   let f = fAbs();
-  let res = p/f;
+  let res = p / f;
   document.getElementById('fRel').innerHTML = '1' + ':' + Math.round(res);
- 
+
   let classValue = document.getElementById('classAccuracy').value;
   if (classValue == '2') {
-    if((1/res) > (1/10000)){
+    if ((1 / res) > (1 / 10000)) {
       alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
     }
   } else if (classValue == '3') {
-    if((1/res) > (1/5000)){
+    if ((1 / res) > (1 / 5000)) {
       alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
     }
   } else if (classValue == '4') {
-    if((1/res) > (1/25000)){
+    if ((1 / res) > (1 / 25000)) {
       alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
     }
-  } else if (classValue == '1'){
-    if((1/res) > (1/2000)){
+  } else if (classValue == '1') {
+    if ((1 / res) > (1 / 2000)) {
       alert('Відносна помилка ходу перевищує допустиме значення, перевірте правильніть введених даниих та повторіть розрахунок');
     }
   }
@@ -1011,4 +983,81 @@ function calcPoints(el, index) {
       console.log(res);
     }
   })
+}
+
+document.getElementById('length').addEventListener('keyup', lengthLimitation)
+
+function lengthLimitation() {
+  let x, y, l;
+  let builtUp = document.getElementById('builtUp').value;
+  let classValue = document.getElementById('classAccuracy').value;
+  if (classValue == '1') {
+    if (builtUp == '1') {
+      x = 1000;
+      y = 200;
+      l = 'Довжина сторони ходу має бути не менше 200 та не більше 1000 метрів';
+    } else if (builtUp == '2') {
+      x = 1500;
+      y = 400;
+      l = 'Довжина сторони ходу має бути не менше 400 та не більше 1500 метрів';
+    }
+  } else if (classValue == '2') {
+    x = 800;
+    y = 120;
+    l = 'Довжина сторони ходу має бути не менше 120 та не більше 800 метрів';
+  } else if (classValue == '3') {
+    x = 500;
+    y = 80;
+    l = 'Довжина сторони ходу має бути не менше 80 та не більше 500 метрів';
+  } else if (classValue == '4') {
+    x = 3000;
+    y = 250;
+    l = 'Довжина сторони ходу має бути не менше 250 та не більше 3000 метрів';
+  }
+  limitLength(x, y, l);
+}
+
+function limitLength(x, y, l) {
+  let length = document.getElementById('length');
+  let err = document.getElementById('errorSpan');
+  if (x >= length.value && length.value >= y) {
+    length.classList.remove('invalid');
+    err.style.display = 'none';
+  } else {
+    length.classList.add('invalid');
+    err.style.display = 'block';
+    err.innerHTML = l;
+  }
+}
+
+function calculateAmountOfSides() {
+  let builtUp = document.getElementById('builtUp').value;
+  let classValue = document.getElementById('classAccuracy').value;
+  let scale = document.getElementById('scale').value;
+  let sides = document.querySelectorAll('.measureLength').length;
+  console.log(sides);
+  if (classValue !== '1' && sides == 15) {
+      res();
+  } else {
+    if (scale == '500') {
+      if (builtUp == '1' && sides == 20) {
+        res();
+      }
+    } else if (scale == '1000' && sides == 20) {
+      res();
+    } else if (scale == '2000'){
+      if((builtUp == '1' && sides == 20) || (builtUp == '2' && sides == 30)){
+        res();
+      }
+    }else if (scale == '5000'){
+      if((builtUp == '1' && sides == 30) || (builtUp == '2' && sides == 40)){
+        res();
+      }
+   }
+}
+}
+
+function res() {
+  document.getElementById('sideOfTraverseButton').disabled = true;
+  alert("Ви ввели максимально допустиму кількість сторін у ході, для завершення розрахунку додайте значення останнього кута");
 }

@@ -1,6 +1,7 @@
-.invalid{
-  border: 1px solid red;
+p {
+ margin:15px 0;
 }
+
  #settingsCoordinates{
    border:1px solid black;
    padding: 10px;
@@ -62,4 +63,12 @@ justify-content: space-between;
 .secondScreen form {
   margin: -20px 0 0 20px;
   min-width:380px;
+}
+
+.invalid{
+  border:2px solid red;
+}
+
+input.invalid:focus{
+  outline: none;
 }
